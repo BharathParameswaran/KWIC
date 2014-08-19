@@ -53,7 +53,7 @@ public class RotatorTest {
 		Rotator r = new Rotator();
 		
 		try {
-			r.rotate(" ");
+			r.rotate("");
 		} catch(AssertionError ae) {
 			assertEquals("Unexpected empty string to be rotated", ae.getMessage());
 		}
@@ -85,5 +85,42 @@ public class RotatorTest {
 		for (int i = 0; i < 4; i++) {
 			assertEquals(expectedOutput.get(i), actual.get(i));
 		}
+	}
+	
+	@Test
+	public void testSetDelimiter() {
+		testSetDelimiterNullInput();
+		testSetDelimiterEmptyInput();
+		testSetDelimiterTypicalInput();
+	}
+
+	private void testSetDelimiterNullInput() {
+		Rotator r = new Rotator();
+		
+		try {
+			r.setDelimiter(null);
+		} catch(AssertionError ae) {
+			assertEquals("Unexpected null delimiter given", ae.getMessage());
+		}
+		
+	}
+
+	private void testSetDelimiterEmptyInput() {
+		Rotator r = new Rotator();
+		
+		try {
+			r.setDelimiter("");
+		} catch(AssertionError ae) {
+			assertEquals("Unexpected empty delimiter given", ae.getMessage());
+		}
+		
+	}
+
+	private void testSetDelimiterTypicalInput() {
+		Rotator r = new Rotator();
+		String delimiter1 = "_";
+		
+		r.setDelimiter(delimiter1);
+		assertEquals(delimiter1, r.getDelimiter());
 	}
 }

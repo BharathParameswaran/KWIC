@@ -24,6 +24,13 @@ public class Rotator {
 		return _delimiter;
 	}
 	
+	public void setDelimiter(String delimiter) {
+		assert delimiter != null : "Unexpected null delimiter given";
+		assert !delimiter.isEmpty() : "Unexpected empty delimiter given";
+		
+		_delimiter = delimiter;
+	}
+	
 	/**
 	 * This function takes in an input and rotates the words
 	 * in the string clockwise one word at a time and returns
