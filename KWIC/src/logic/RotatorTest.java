@@ -63,8 +63,8 @@ public class RotatorTest {
 
 	private void testMethodForOneWordInput() {
 		Rotator r = new Rotator();
-		String input = "one";
-		String expectedOutput = "ONE";
+		String input = "One";
+		String expectedOutput = "One";
 		
 		List<String> actual = r.rotate(input);
 		assertEquals(1, actual.size());
@@ -74,12 +74,12 @@ public class RotatorTest {
 
 	private void testMethodForTypicalInput() {
 		Rotator r = new Rotator();
-		String input = "The Day After Tomorrow";
+		String input = "The day After tomorrow";
 		List<String> expectedOutput = new ArrayList<String>();
-		expectedOutput.add("THE day after tomorrow");
-		expectedOutput.add("DAY after tomorrow the");
-		expectedOutput.add("AFTER tomorrow the day");
-		expectedOutput.add("TOMORROW the day after");
+		expectedOutput.add("The day After tomorrow");
+		expectedOutput.add("day After tomorrow The");
+		expectedOutput.add("After tomorrow The day");
+		expectedOutput.add("tomorrow The day After");
 		
 		List<String> actual = r.rotate(input);
 		assertEquals(4, actual.size());

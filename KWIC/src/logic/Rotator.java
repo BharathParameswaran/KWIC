@@ -35,8 +35,6 @@ public class Rotator {
 	 * This function takes in an input and rotates the words
 	 * in the string clockwise one word at a time and returns
 	 * a list of string formed from this process.
-	 * The output strings are "highlighted" (look at 
-	 * the highlight function).
 	 * 
 	 * @param input
 	 * @return List<String>
@@ -49,35 +47,16 @@ public class Rotator {
 		String modifiedInput = input + _delimiter + input;
 		int inputLength = input.length();
 		
-		output.add(highlight(input));
+		output.add(input);
 		
 		for (int index = input.indexOf(_delimiter) 
 				; index >= 0 
 				; index = input.indexOf(_delimiter, index + 1)) {
 			
 			String rotatedString = modifiedInput.substring(index + 1, index + inputLength + 1);
-			String highlightedString = highlight(rotatedString);
-			output.add(highlightedString);
+			output.add(rotatedString);
 		}
 	
 		return output;
-	}
-
-	/**
-	 * This function "highlights the given string
-	 * by changing the first word to upper case and
-	 * the rest of the words to lower case
-	 * @param input
-	 * @return
-	 */
-	private String highlight(String input) {
-		String output = new String(input);
-		int endOfFirstWord = input.indexOf(" ");
-		if (endOfFirstWord >= 0) {
-			return output.substring(0, endOfFirstWord).toUpperCase()
-					+ output.substring(endOfFirstWord).toLowerCase();
-		} else {
-			return output.toUpperCase();
-		}
 	}
 }
