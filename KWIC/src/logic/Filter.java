@@ -26,7 +26,15 @@ public class Filter {
 		assert word != null : "Unexpected null word given";
 		assert !word.isEmpty() : "Unexpected empty word given";
 		
-		_wordsToIgnore.add(word);
+		if (!_wordsToIgnore.contains(word.toLowerCase())) {
+			_wordsToIgnore.add(word.toLowerCase());
+		}
+	}
+	
+	public void removeWordFromIgnoreList(String word) {
+		assert word != null : "Unexpected null word given";
+		
+		_wordsToIgnore.remove(word);
 	}
 	
 	public String getDelimiter() {
@@ -41,6 +49,8 @@ public class Filter {
 	}
 	
 	public List<String> filterList(List<String> listToFilter) {
+		assert listToFilter != null : "Unexpected null list to filter";
+		
 		List<String> outputList = new ArrayList<String>(); 
 		
 		for(String s : listToFilter) {
@@ -49,13 +59,12 @@ public class Filter {
 			}
 		}
 		
-		return listToFilter;
+		return outputList;
 	}
 
 	private boolean startsWithKeyword(String s) {
 		String firstWord = getFirstWord(s);
-		
-		return !_wordsToIgnore.contains(firstWord);
+		return !_wordsToIgnore.contains(firstWord.toLowerCase());
 	}
 
 	private String getFirstWord(String s) {
