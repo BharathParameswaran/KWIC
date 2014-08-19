@@ -19,7 +19,6 @@ public class RotatorTest {
 
 	private void testMethodForDefaultConstructor() {
 		Rotator r = new Rotator();
-		
 		assertEquals(" ", r.getDelimiter());
 	}
 
@@ -44,6 +43,7 @@ public class RotatorTest {
 		
 		try {
 			r.rotate(null);
+			assertFalse("Expected AssertionError", true);
 		} catch(AssertionError ae) {
 			assertEquals("Unexpected null input to be rotated", ae.getMessage());
 		}
@@ -54,6 +54,7 @@ public class RotatorTest {
 		
 		try {
 			r.rotate("");
+			assertFalse("Expected AssertionError", true);
 		} catch(AssertionError ae) {
 			assertEquals("Unexpected empty string to be rotated", ae.getMessage());
 		}
@@ -99,6 +100,7 @@ public class RotatorTest {
 		
 		try {
 			r.setDelimiter(null);
+			assertFalse("Expected AssertionError", true);
 		} catch(AssertionError ae) {
 			assertEquals("Unexpected null delimiter given", ae.getMessage());
 		}
@@ -110,6 +112,7 @@ public class RotatorTest {
 		
 		try {
 			r.setDelimiter("");
+			assertFalse("Expected AssertionError", true);
 		} catch(AssertionError ae) {
 			assertEquals("Unexpected empty delimiter given", ae.getMessage());
 		}
