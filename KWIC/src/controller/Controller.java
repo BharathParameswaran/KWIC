@@ -15,32 +15,26 @@ import logic.Rotator;
  */
 public class Controller {
 	private List<String> _titlesGiven;
+	private List<String> _wordsToIgnore;
 	private Rotator _rotator;
-	private Filter _filter;
 	
 	
 	public Controller() {
 		_titlesGiven = new ArrayList<String>();
 		_rotator = new Rotator();
-		_filter = new Filter();
 	}
 	
 	/**
 	 * Allows invocation to specify dependencies
 	 */
-	public Controller(Rotator rotator, Filter filter) {
+	public Controller(Rotator rotator) {
 		_titlesGiven = new ArrayList<String>();
 		
 		if (rotator == null) {
 			throw new InvalidParameterException("Given rotator was null");
 		}
 		
-		if (filter == null) {
-			throw new InvalidParameterException("Given filter was null");
-		}
-		
 		_rotator = rotator;
-		_filter = filter;
 	}
 	
 	/**
@@ -85,7 +79,7 @@ public class Controller {
 		List<String> result = new ArrayList<String>();
 		
 		for(String word : words) {
-			if(addWordToIgnore(word)) {
+			if(addWordToIgnoreList(word)) {
 				result.add(word);
 			}
 		}
@@ -100,12 +94,24 @@ public class Controller {
 	 * @param words
 	 * @return
 	 */
-	public boolean addWordToIgnore(String word) {
+	public boolean addWordToIgnoreList(String word) {
 		if (word == null) return false;
 		if (word.trim().isEmpty()) return false;
 		
-		_filter.addWordToIgnoreList(word);
+		if (!_wordsToIgnore.contains(word.toLowerCase())) {
+			_wordsToIgnore.add(word.toLowerCase());
+		}
 		return true;
+	}
+	
+	public void removeWordFromIgnoreList(String word) {
+		assert word != null : "Unexpected null word given";
+		
+		_wordsToIgnore.remove(word);
+	}
+	
+	public List<String> getIgnoreWordsList() {
+		return _wordsToIgnore;
 	}
 	
 	/**
