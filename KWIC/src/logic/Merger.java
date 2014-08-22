@@ -3,28 +3,60 @@ package logic;
 import java.util.List;
 
 public class Merger {
-	
-	public static void mergeTitleToList(List<String> newTitle, List<String> kwicTitleIndex) {
-		
-		mergeUsingBinarySearch( newTitle,kwicTitleIndex, 0, kwicTitleIndex.size());
+
+	/**
+	 * Accepts a sorted list of Strings and a new list of
+	 * Strings to be added and merges them into one sorted list and returns it
+	 * 
+	 * @param newTitles
+	 * @param kwicTitleIndex
+	 * @return
+	 */
+
+	public static List<String> mergeTitlesToExistingList(
+			List<String> newTitles, List<String> kwicTitleIndex) {
+
+		assert (newTitles != null && kwicTitleIndex != null) : "Unexpected null list to be merged";
+
+		if (kwicTitleIndex.size() == 0)
+			return newTitles;
+
+		for (String title : newTitles)
+			mergeUsingBinarySearch(title, kwicTitleIndex, 0,
+					kwicTitleIndex.size() - 1);
+		return kwicTitleIndex;
 	}
-	
-	private static void mergeUsingBinarySearch(List<String> newTitle, List<String> kwicTitleIndex, int start, int end) {
-		int i=0;
-		while(start < end) {
-			int mid = (start+end)/2;
-			
-			if(kwicTitleIndex.get(mid).compareToIgnoreCase(newTitle.get(i)) > 0) {
-				mergeUsingBinarySearch(newTitle, kwicTitleIndex, start, mid-1);
+
+	private static void mergeUsingBinarySearch(String title,
+			List<String> kwicTitleIndex, int start, int end) {
+
+		if (start <= end) {
+			int mid = (start + end) / 2;
+
+			if (kwicTitleIndex.get(mid).compareToIgnoreCase(title) > 0) {
+				if (start == end) {
+					kwicTitleIndex.add(mid, title);
+				} else if (mid == 0)
+					kwicTitleIndex.add(0, title);
+				else
+					mergeUsingBinarySearch(title, kwicTitleIndex, start,
+							mid - 1);
 			}
-			
-			else if (kwicTitleIndex.get(mid).compareToIgnoreCase(newTitle.get(i)) < 0) {
-				mergeUsingBinarySearch(newTitle, kwicTitleIndex, mid+1, end);
+
+			else if (kwicTitleIndex.get(mid).compareToIgnoreCase(title) <= 0) {
+				if (start == end)
+					if (mid != kwicTitleIndex.size() - 1) {
+						kwicTitleIndex.add(mid + 1, title);
+					} else
+						kwicTitleIndex.add(title);
+
+				else
+					mergeUsingBinarySearch(title, kwicTitleIndex, mid + 1, end);
 
 			}
-				
+
 		}
-		
+
 	}
 
 }
