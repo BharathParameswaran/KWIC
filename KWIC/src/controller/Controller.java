@@ -1,9 +1,10 @@
 package controller;
 
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
+import logic.Alphabetizer;
+import logic.Capitalizer;
 import logic.Filter;
 import logic.Rotator;
 
@@ -16,25 +17,12 @@ import logic.Rotator;
 public class Controller {
 	private List<String> _titlesGiven;
 	private List<String> _wordsToIgnore;
-	private Rotator _rotator;
+	private List<String> _resultList;
 	
 	
 	public Controller() {
 		_titlesGiven = new ArrayList<String>();
-		_rotator = new Rotator();
-	}
-	
-	/**
-	 * Allows invocation to specify dependencies
-	 */
-	public Controller(Rotator rotator) {
-		_titlesGiven = new ArrayList<String>();
-		
-		if (rotator == null) {
-			throw new InvalidParameterException("Given rotator was null");
-		}
-		
-		_rotator = rotator;
+		_wordsToIgnore = new ArrayList<String>();
 	}
 	
 	/**
@@ -101,6 +89,8 @@ public class Controller {
 		if (!_wordsToIgnore.contains(word.toLowerCase())) {
 			_wordsToIgnore.add(word.toLowerCase());
 		}
+		
+		updateResult();
 		return true;
 	}
 	
@@ -108,8 +98,22 @@ public class Controller {
 		assert word != null : "Unexpected null word given";
 		
 		_wordsToIgnore.remove(word);
+		updateResult();
 	}
 	
+	private void updateResult() {
+		List<String> intermediateResult = new ArrayList<String>();
+		for(String s : _titlesGiven) {
+			intermediateResult.add(Capitalizer.capitalize(s, _wordsToIgnore));
+		}
+		
+		intermediateResult = Rotator.rotateList(intermediateResult);
+		intermediateResult = Filter.filterList(intermediateResult, _wordsToIgnore);
+		intermediateResult = Alphabetizer.alphabetize(intermediateResult);
+		// intermediateResult = Merger.merge(intermediateResult, _resultList);
+		_resultList = intermediateResult;		
+	}
+
 	public List<String> getIgnoreWordsList() {
 		return _wordsToIgnore;
 	}
@@ -120,7 +124,7 @@ public class Controller {
 	 * @return
 	 */
 	public List<String> getCurrentResult() {
-		return new ArrayList<String>();
+		return _resultList;
 	}
 	
 	/**
