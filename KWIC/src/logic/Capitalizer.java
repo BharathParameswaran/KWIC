@@ -2,6 +2,11 @@ package logic;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 
+ * @author Bharath
+ *
+ */
 public class Capitalizer {
 
 	/**
@@ -30,7 +35,7 @@ public class Capitalizer {
 		output = output.substring(0, output.length()-1);
 		return output;
 	}
-	
+
 	public static List<String> capitalizeList (List<String> titlesList, List<String> wordsToIgnore){
 		assert titlesList != null : "Unexpected null list to be capitalized";
 		assert !titlesList.isEmpty() : "Unexpected empty list to be capitalized";

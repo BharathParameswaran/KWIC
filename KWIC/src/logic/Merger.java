@@ -2,6 +2,11 @@ package logic;
 
 import java.util.List;
 
+/**
+ * 
+ * @author Bharath
+ *
+ */
 public class Merger {
 
 	/**

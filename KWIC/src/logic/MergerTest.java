@@ -8,6 +8,11 @@ import java.util.List;
 
 import org.junit.Test;
 
+/**
+ * 
+ * @author Bharath
+ *
+ */
 public class MergerTest {
 	
 	@Test

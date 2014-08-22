@@ -3,6 +3,12 @@ package logic;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * 
+ * @author Bharath
+ *
+ */
+
 public class Alphabetizer {
 
 	/**
