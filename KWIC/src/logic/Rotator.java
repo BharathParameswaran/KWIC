@@ -12,6 +12,16 @@ import java.util.List;
 public class Rotator {
 	
 	private static final String DELIMITER = " ";
+	
+	public static List<String> rotateList(List<String> inputList) {
+		List<String> outputList = new ArrayList<String>();
+		
+		for (String input : inputList) {
+			outputList.addAll(rotate(input));
+		}
+		
+		return outputList;
+	}
 
 	/**
 	 * This function takes in an input and rotates the words

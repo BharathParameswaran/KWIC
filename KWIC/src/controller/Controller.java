@@ -104,9 +104,10 @@ public class Controller {
 	private void updateResult() {
 		List<String> intermediateResult = new ArrayList<String>();
 		for(String s : _titlesGiven) {
-			intermediateResult.addAll(Rotator.rotate(Capitalizer.capitalize(s, _wordsToIgnore)));
+			intermediateResult.add(Capitalizer.capitalize(s, _wordsToIgnore));
 		}
 		
+		intermediateResult = Rotator.rotateList(intermediateResult);
 		intermediateResult = Filter.filterList(intermediateResult, _wordsToIgnore);
 		intermediateResult = Alphabetizer.alphabetize(intermediateResult);
 		// intermediateResult = Merger.merge(intermediateResult, _resultList);
