@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import controller.Controller;
-import logic.Rotator;
 
 import org.junit.Test;
 
@@ -256,7 +255,7 @@ public class ControllerTest {
 	}
 
 	private void testAddWordToIgnoreTypicalInput() {
-		Controller controller = new Controller(new Rotator());
+		Controller controller = new Controller();
 		List<String> expectedOutput = new ArrayList<String>();
 		
 		expectedOutput.add("word");
