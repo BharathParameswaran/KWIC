@@ -10,27 +10,19 @@ import java.util.List;
  * @author thyagesh93
  */
 public class Rotator {
-	private String _delimiter = " ";
 	
-	public Rotator() {
+	private static final String DELIMITER = " ";
+	
+	public static List<String> rotateList(List<String> inputList) {
+		List<String> outputList = new ArrayList<String>();
 		
-	}
-	
-	public Rotator(String delimiter) {
-		_delimiter = delimiter;
-	}
-	
-	public String getDelimiter() {
-		return _delimiter;
-	}
-	
-	public void setDelimiter(String delimiter) {
-		assert delimiter != null : "Unexpected null delimiter given";
-		assert !delimiter.isEmpty() : "Unexpected empty delimiter given";
+		for (String input : inputList) {
+			outputList.addAll(rotate(input));
+		}
 		
-		_delimiter = delimiter;
+		return outputList;
 	}
-	
+
 	/**
 	 * This function takes in an input and rotates the words
 	 * in the string clockwise one word at a time and returns
@@ -39,19 +31,19 @@ public class Rotator {
 	 * @param input
 	 * @return List<String>
 	 */
-	public List<String> rotate(String input) {
+	public static List<String> rotate(String input) {
 		assert input != null : "Unexpected null input to be rotated";
 		assert !input.isEmpty() : "Unexpected empty string to be rotated";
 		
 		List<String> output = new ArrayList<String>();
-		String modifiedInput = input + _delimiter + input;
+		String modifiedInput = input + DELIMITER + input;
 		int inputLength = input.length();
 		
 		output.add(input);
 		
-		for (int index = input.indexOf(_delimiter) 
+		for (int index = input.indexOf(DELIMITER) 
 				; index >= 0 
-				; index = input.indexOf(_delimiter, index + 1)) {
+				; index = input.indexOf(DELIMITER, index + 1)) {
 			
 			String rotatedString = modifiedInput.substring(index + 1, index + inputLength + 1);
 			output.add(rotatedString);

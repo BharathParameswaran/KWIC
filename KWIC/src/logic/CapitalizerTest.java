@@ -109,7 +109,7 @@ public class CapitalizerTest {
 
 		// test with null titlesList and valid wordsToIgnore List
 		try {
-			Capitalizer.capitalizeAll(null, wordsToIgnore);
+			Capitalizer.capitalizeList(null, wordsToIgnore);
 			assertFalse("Expected AssertionError", true);
 		} catch (AssertionError ae) {
 			assertEquals("Unexpected null list to be capitalized",
@@ -121,7 +121,7 @@ public class CapitalizerTest {
 
 		// test with valid titlesList and null wordsToIgnore List
 		try {
-			Capitalizer.capitalizeAll(titlesList, null);
+			Capitalizer.capitalizeList(titlesList, null);
 			assertFalse("Expected AssertionError", true);
 		} catch (AssertionError ae) {
 			assertEquals("Unexpected null for list of ignored words",
@@ -137,7 +137,7 @@ public class CapitalizerTest {
 		wordsToIgnore.add("the");
 		List<String> titlesList = new ArrayList<String>();
 		try {
-			Capitalizer.capitalizeAll(titlesList, wordsToIgnore);
+			Capitalizer.capitalizeList(titlesList, wordsToIgnore);
 			assertFalse("Expected AssertionError", true);
 		} catch (AssertionError ae) {
 			assertEquals("Unexpected empty list to be capitalized",
@@ -153,7 +153,7 @@ public class CapitalizerTest {
 		List<String> titlesList = new ArrayList<String>();
 		titlesList.add("The Day after tomorrow");
 		assertEquals("the Day after Tomorrow",
-				Capitalizer.capitalizeAll(titlesList, wordsToIgnore).get(0));
+				Capitalizer.capitalizeList(titlesList, wordsToIgnore).get(0));
 
 	}
 
@@ -173,7 +173,7 @@ public class CapitalizerTest {
 		outputList.add("Fast and Furious");
 		outputList.add("Man of Steel");
 		assertEquals(outputList,
-				Capitalizer.capitalizeAll(titlesList, wordsToIgnore));
+				Capitalizer.capitalizeList(titlesList, wordsToIgnore));
 	}
 
 }

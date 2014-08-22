@@ -1,9 +1,10 @@
 package controller;
 
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
+import logic.Alphabetizer;
+import logic.Capitalizer;
 import logic.Filter;
 import logic.Rotator;
 
@@ -15,32 +16,13 @@ import logic.Rotator;
  */
 public class Controller {
 	private List<String> _titlesGiven;
-	private Rotator _rotator;
-	private Filter _filter;
+	private List<String> _wordsToIgnore;
+	private List<String> _resultList;
 	
 	
 	public Controller() {
 		_titlesGiven = new ArrayList<String>();
-		_rotator = new Rotator();
-		_filter = new Filter();
-	}
-	
-	/**
-	 * Allows invocation to specify dependencies
-	 */
-	public Controller(Rotator rotator, Filter filter) {
-		_titlesGiven = new ArrayList<String>();
-		
-		if (rotator == null) {
-			throw new InvalidParameterException("Given rotator was null");
-		}
-		
-		if (filter == null) {
-			throw new InvalidParameterException("Given filter was null");
-		}
-		
-		_rotator = rotator;
-		_filter = filter;
+		_wordsToIgnore = new ArrayList<String>();
 	}
 	
 	/**
@@ -85,7 +67,7 @@ public class Controller {
 		List<String> result = new ArrayList<String>();
 		
 		for(String word : words) {
-			if(addWordToIgnore(word)) {
+			if(addWordToIgnoreList(word)) {
 				result.add(word);
 			}
 		}
@@ -100,12 +82,40 @@ public class Controller {
 	 * @param words
 	 * @return
 	 */
-	public boolean addWordToIgnore(String word) {
+	public boolean addWordToIgnoreList(String word) {
 		if (word == null) return false;
 		if (word.trim().isEmpty()) return false;
 		
-		_filter.addWordToIgnoreList(word);
+		if (!_wordsToIgnore.contains(word.toLowerCase())) {
+			_wordsToIgnore.add(word.toLowerCase());
+		}
+		
+		updateResult();
 		return true;
+	}
+	
+	public void removeWordFromIgnoreList(String word) {
+		assert word != null : "Unexpected null word given";
+		
+		_wordsToIgnore.remove(word);
+		updateResult();
+	}
+	
+	private void updateResult() {
+		List<String> intermediateResult = new ArrayList<String>();
+		for(String s : _titlesGiven) {
+			intermediateResult.add(Capitalizer.capitalize(s, _wordsToIgnore));
+		}
+		
+		intermediateResult = Rotator.rotateList(intermediateResult);
+		intermediateResult = Filter.filterList(intermediateResult, _wordsToIgnore);
+		intermediateResult = Alphabetizer.alphabetize(intermediateResult);
+		// intermediateResult = Merger.merge(intermediateResult, _resultList);
+		_resultList = intermediateResult;		
+	}
+
+	public List<String> getIgnoreWordsList() {
+		return _wordsToIgnore;
 	}
 	
 	/**
@@ -114,7 +124,7 @@ public class Controller {
 	 * @return
 	 */
 	public List<String> getCurrentResult() {
-		return new ArrayList<String>();
+		return _resultList;
 	}
 	
 	/**

@@ -31,7 +31,7 @@ public class Capitalizer {
 		return output;
 	}
 	
-	public static List<String> capitalizeAll (List<String> titlesList, List<String> wordsToIgnore){
+	public static List<String> capitalizeList (List<String> titlesList, List<String> wordsToIgnore){
 		assert titlesList != null : "Unexpected null list to be capitalized";
 		assert !titlesList.isEmpty() : "Unexpected empty list to be capitalized";
 		List<String> outputList = new ArrayList<String>();
@@ -41,17 +41,17 @@ public class Capitalizer {
 		return outputList;
 	}
 
-	public static String capitalizeFirstLetterOfWord(String word) {
+	private static String capitalizeFirstLetterOfWord(String word) {
 		return word.replaceFirst(word.substring(0, 1),
 				word.substring(0, 1).toUpperCase());
 	}
 
-	public static String convertWordToLowerCase(String word) {
+	private static String convertWordToLowerCase(String word) {
 		word = word.toLowerCase();
 		return word;
 	}
 
-	public static boolean isWordToIgnore(List<String> wordsToIgnore, String word) {
+	private static boolean isWordToIgnore(List<String> wordsToIgnore, String word) {
 		return wordsToIgnore.contains(word.toLowerCase());
 	}
 
