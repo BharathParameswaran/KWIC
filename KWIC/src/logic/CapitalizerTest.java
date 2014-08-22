@@ -16,7 +16,15 @@ public class CapitalizerTest {
 		testMethodForNullIgnoredWordList();
 		testMethodForEmptyString();
 		testMethodForStringWithNoKeyword();
-		testMethodForTypicalInput();
+		testMethodForTypicalString();
+	}
+
+	@Test
+	public void testCapitalizeAll() {
+		testMethodForNullList();
+		testMethodForEmptyList();
+		testMethodForListWithOneString();
+		testMethodForTypicalList();
 	}
 
 	private void testMethodForNullString() {
@@ -58,35 +66,114 @@ public class CapitalizerTest {
 
 	private void testMethodForEmptyString() {
 
+		List<String> wordsToIgnore = new ArrayList<String>();
+		wordsToIgnore.add("of");
+		wordsToIgnore.add("a");
+		wordsToIgnore.add("the");
+		wordsToIgnore.add("to");
+
 		try {
-			Capitalizer.capitalize("", null);
+			Capitalizer.capitalize("", wordsToIgnore);
 			assertFalse("Expected AssertionError", true);
 		} catch (AssertionError ae) {
 			assertEquals("Unexpected empty string to be capitalized",
 					ae.getMessage());
 		}
 	}
-	
+
 	private void testMethodForStringWithNoKeyword() {
 		List<String> wordsToIgnore = new ArrayList<String>();
 		wordsToIgnore.add("is");
 		wordsToIgnore.add("the");
 		wordsToIgnore.add("an");
 		String input = "is THE An";
-		assertEquals("is the an",Capitalizer.capitalize(input, wordsToIgnore));
-		
+		assertEquals("is the an", Capitalizer.capitalize(input, wordsToIgnore));
+
 	}
-	
-	private void testMethodForTypicalInput() {
+
+	private void testMethodForTypicalString() {
 		List<String> wordsToIgnore = new ArrayList<String>();
 		wordsToIgnore.add("is");
 		wordsToIgnore.add("the");
 		wordsToIgnore.add("after");
 		String input = "The Day after tomorrow";
-		assertEquals("the Day after Tomorrow",Capitalizer.capitalize(input, wordsToIgnore));
-		
+		assertEquals("the Day after Tomorrow",
+				Capitalizer.capitalize(input, wordsToIgnore));
+
 	}
 
+	private void testMethodForNullList() {
+		List<String> wordsToIgnore = new ArrayList<String>();
+		wordsToIgnore.add("is");
+		wordsToIgnore.add("the");
 
-	
+		// test with null titlesList and valid wordsToIgnore List
+		try {
+			Capitalizer.capitalizeAll(null, wordsToIgnore);
+			assertFalse("Expected AssertionError", true);
+		} catch (AssertionError ae) {
+			assertEquals("Unexpected null list to be capitalized",
+					ae.getMessage());
+		}
+
+		List<String> titlesList = new ArrayList<String>();
+		titlesList.add("The Day after tomorrow");
+
+		// test with valid titlesList and null wordsToIgnore List
+		try {
+			Capitalizer.capitalizeAll(titlesList, null);
+			assertFalse("Expected AssertionError", true);
+		} catch (AssertionError ae) {
+			assertEquals("Unexpected null for list of ignored words",
+					ae.getMessage());
+		}
+
+	}
+
+	private void testMethodForEmptyList() {
+
+		List<String> wordsToIgnore = new ArrayList<String>();
+		wordsToIgnore.add("is");
+		wordsToIgnore.add("the");
+		List<String> titlesList = new ArrayList<String>();
+		try {
+			Capitalizer.capitalizeAll(titlesList, wordsToIgnore);
+			assertFalse("Expected AssertionError", true);
+		} catch (AssertionError ae) {
+			assertEquals("Unexpected empty list to be capitalized",
+					ae.getMessage());
+		}
+
+	}
+
+	private void testMethodForListWithOneString() {
+		List<String> wordsToIgnore = new ArrayList<String>();
+		wordsToIgnore.add("after");
+		wordsToIgnore.add("the");
+		List<String> titlesList = new ArrayList<String>();
+		titlesList.add("The Day after tomorrow");
+		assertEquals("the Day after Tomorrow",
+				Capitalizer.capitalizeAll(titlesList, wordsToIgnore).get(0));
+
+	}
+
+	private void testMethodForTypicalList() {
+		List<String> wordsToIgnore = new ArrayList<String>();
+		wordsToIgnore.add("of");
+		wordsToIgnore.add("the");
+		wordsToIgnore.add("after");
+		wordsToIgnore.add("and");
+		List<String> titlesList = new ArrayList<String>();
+		titlesList.add("The Day after tomorrow");
+		titlesList.add("Fast AND furious");
+		titlesList.add("man Of Steel");
+
+		List<String> outputList = new ArrayList<String>();
+		outputList.add("the Day after Tomorrow");
+		outputList.add("Fast and Furious");
+		outputList.add("Man of Steel");
+		assertEquals(outputList,
+				Capitalizer.capitalizeAll(titlesList, wordsToIgnore));
+	}
+
 }

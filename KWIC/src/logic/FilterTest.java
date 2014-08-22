@@ -239,14 +239,7 @@ public class FilterTest {
 		
 		expectedList.add("day After tomorrow The");
 		expectedList.add("tomorrow The day After");
-		
-		List<String> actualList = f.filterList(inputList);
-		
-		assertEquals(expectedList.size(), actualList.size());
-		for (int i = 0 ; i < expectedList.size() ; i ++) {
-			assertEquals(expectedList.get(i), actualList.get(i));
-		}
-		
+		assertEquals(expectedList, f.filterList(inputList));
 	}
 
 }

@@ -1,4 +1,5 @@
 package logic;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Capitalizer {
@@ -12,7 +13,7 @@ public class Capitalizer {
 	 */
 	public static String capitalize(String input, List<String> wordsToIgnore) {
 		assert input != null : "Unexpected null string to be capitalized";
-		assert !input.isEmpty() : "Unexpected empty string to be capitalized";
+		assert input.length()!=0 : "Unexpected empty string to be capitalized";
 		assert wordsToIgnore != null : "Unexpected null for list of ignored words";
 		
 		String[] words = input.split(" ");
@@ -28,6 +29,16 @@ public class Capitalizer {
 		}
 		output = output.substring(0, output.length()-1);
 		return output;
+	}
+	
+	public static List<String> capitalizeAll (List<String> titlesList, List<String> wordsToIgnore){
+		assert titlesList != null : "Unexpected null list to be capitalized";
+		assert !titlesList.isEmpty() : "Unexpected empty list to be capitalized";
+		List<String> outputList = new ArrayList<String>();
+		for(String title: titlesList) {
+			outputList.add(capitalize(title, wordsToIgnore));
+		}
+		return outputList;
 	}
 
 	public static String capitalizeFirstLetterOfWord(String word) {
