@@ -246,7 +246,7 @@ public class ControllerTest {
 		wordsToAdd.add("Of");
 		wordsToAdd.add("OF");
 		
-		controller.addWordsToIgnore(wordsToAdd);
+		assertEquals(new ArrayList<String>(), controller.addWordsToIgnore(wordsToAdd));
 		
 		assertEquals(1, controller.getIgnoreWordsList().size());
 		assertEquals("of", controller.getIgnoreWordsList().get(0));
@@ -255,12 +255,14 @@ public class ControllerTest {
 	private void testAddWordsToIgnoreTypicalInput() {
 		Controller controller = new Controller();
 		List<String> wordsToAdd = new ArrayList<String>();
+		List<String> wordsWithError = new ArrayList<String>();
 		
 		wordsToAdd.add("of");
 		wordsToAdd.add("a");
 		wordsToAdd.add("the");
 		wordsToAdd.add(" ");
-		controller.addWordsToIgnore(wordsToAdd);
+		wordsWithError.add(" ");
+		assertEquals(wordsWithError, controller.addWordsToIgnore(wordsToAdd));
 		wordsToAdd.remove(" ");
 		
 		List<String> actualList = controller.getIgnoreWordsList();
