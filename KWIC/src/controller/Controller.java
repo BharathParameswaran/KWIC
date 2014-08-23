@@ -46,9 +46,16 @@ public class Controller {
 			return null;
 		}
 		
-		List<String> erroneousStrings;
-		erroneousStrings = addWordsToIgnore(newIgnoreWords);
-		erroneousStrings.addAll(addTitles(newTitles));
+		List<String> erroneousStrings = new ArrayList<String>();
+		List<String> errors = addWordsToIgnore(newIgnoreWords);
+		if (errors != null) {
+			erroneousStrings.addAll(errors);
+		}
+		errors = addTitles(newTitles);
+		
+		if (errors != null) {
+			erroneousStrings.addAll(errors);
+		}
 		
 		return erroneousStrings;
 	}
@@ -62,11 +69,13 @@ public class Controller {
 	 * @return
 	 */
 	public List<String> addTitles(List<String> titles) {
+		if (titles == null) return null;
+		
 		List<String> result = new ArrayList<String>();
 		List<String> newTitles = new ArrayList<String>();
 		
 		for (String title : titles) {
-			if (!addTitle(title, false) || title != null) {
+			if (!addTitle(title, false)) {
 				result.add(title);
 			} else {
 				newTitles.add(title);
@@ -85,11 +94,13 @@ public class Controller {
 	 */
 	private boolean addTitle(String title, boolean updateResult) {
 		if (title == null) return false;
-		if (title.isEmpty()) return false;
+		if (title.trim().isEmpty()) return false;
 		
-		_titlesGiven.add(title);
-		if (updateResult) {
-			updateResultsListForNewTitle(title);
+		if (!_titlesGiven.contains(title)) {
+			_titlesGiven.add(title);
+			if (updateResult) {
+				updateResultsListForNewTitle(title);
+			}
 		}
 		return true;
 	}
@@ -140,7 +151,7 @@ public class Controller {
 			}
 		}
 		
-		updateResultsListForChangedIgnoreWordList();
+		updateResultsListForAddedIgnoreWord();
 		return result;
 	}
 	
@@ -158,7 +169,7 @@ public class Controller {
 		if (!_wordsToIgnore.contains(word.toLowerCase())) {
 			_wordsToIgnore.add(word.toLowerCase());
 			if (updateResult) {
-				updateResultsListForChangedIgnoreWordList();
+				updateResultsListForAddedIgnoreWord();
 			}
 		}
 		return true;
@@ -174,9 +185,7 @@ public class Controller {
 		if (word == null) return false;
 		if (word.trim().isEmpty()) return false;
 		
-		_wordsToIgnore.remove(word);
-		updateResultsListForChangedIgnoreWordList();
-		
+		_wordsToIgnore.remove(word);		
 		return true;
 	}
 	
@@ -215,14 +224,11 @@ public class Controller {
 	 * 		Assumes that the new word has
 	 * 		been added to the field _wordsToIgnore
 	 */
-	private void updateResultsListForChangedIgnoreWordList() {
+	private void updateResultsListForAddedIgnoreWord() {
 		if (_resultList.isEmpty()) return;
 		
-		_resultList = Capitalizer.capitalizeList(_resultList, _wordsToIgnore);
-		// no need to rotate as all combinations are already in list
 		_resultList = Filter.filterList(_resultList, _wordsToIgnore);
-		// the list is already alphabetized
-		// no need to merge
+		_resultList = Capitalizer.capitalizeList(_resultList, _wordsToIgnore);
 	}
 	
 	/**
