@@ -1,85 +1,153 @@
 package ui;
 
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.Rectangle;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.util.List;
+import java.util.Scanner;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import controller.Controller;
 
-public class Ui {
-	JPanel controlPanel = new JPanel();
-	public Ui() {
-		JFrame frame = new JFrame("KWIC");
-		
-		controlPanel.setLayout(new FlowLayout());
-		frame.setSize(400,400);
-		frame.setLayout(new GridLayout(3, 1));
+class Ui {
 
-		JTextField input = new JTextField(20);
-		input.setBounds(10, 10, 300, 30);
-		input.setMinimumSize(new Dimension(300, 30));
-		input.setPreferredSize(new Dimension(300, 30));
-		input.setMaximumSize(input.getPreferredSize());
-		JButton addTitle = new JButton("+ Add as Title");
-		JButton addIgnoredWord = new JButton("+ Add as Ignored Word");
-		
-		controlPanel.add(input);	
-		controlPanel.add(addTitle);
-		controlPanel.add(addIgnoredWord);
-		frame.add(controlPanel);
-		frame.setBounds(100, 100, 550, 140);
-		frame.setMinimumSize(new Dimension(550,140));
-		//frame.setMaximizedBounds(new Rectangle(new Dimension(550,(int) frame.getPreferredSize().getHeight())));;
-		
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
-	}
+	private static final String INVALID_OPTION_ERROR = "Please enter a valid integer between 1 and 6";
+	private static final String WORDS_TO_IGNORE_LIST = "List of words to ignore";
+	private static final String TITLES_LIST = "List of titles";
+	private static final String RESULT_SET = "Result Set";
+	private static final int EXIT_OPTION = 6;
+	private static final int INVALID_OPTION = -1;
+	private static Controller _controller = new Controller();
+	private static Scanner sc = new Scanner(System.in);
 
 	public static void main(String[] args) {
-		Ui test = new Ui();
+		printOptionsForUser();
+		int option = 0;
+		while (option != EXIT_OPTION) {
+			option = getInputFromUser();
+			if (!isValid(option))
+				continue;
+			processInput(option);
+
+		}
 	}
 
-	/*class MyCustomTextField extends javax.swing.JTextField {
+	private static boolean isValid(int option) {
+		return (option != INVALID_OPTION);
+	}
 
-		private int originallimit;
-		int previousLength;
-		int length;
+	private static int getInputFromUser() {
+		int option = 0;
+		System.out.print("Enter your option: ");
+		try {
+			option = sc.nextInt();
+		} catch (Exception e) {
+			sc.nextLine();
+			System.out.println(INVALID_OPTION_ERROR);
+			return INVALID_OPTION;
+		}
+		return option;
+	}
 
-		public MyCustomTextField(int limit) {
+	private static void processInput(int option) {
+		switch (option) {
+		case 1:
+			getNewTitle();
+			printResultList();
+			break;
+		case 2:
+			getNewIgnoredWord();
+			printResultList();
+			break;
+		case 3:
+			getInputFromFile();
+			printResultList();
+			break;
+		case 4:
+			printList(_controller.getGivenTitles(), TITLES_LIST);
+			printList(_controller.getIgnoreWordsList(), WORDS_TO_IGNORE_LIST);
+			break;
+		case 5:
+			printList(_controller.getCurrentResult(), RESULT_SET);
+			break;
+		case 6:
+			System.exit(0);
+		default:
+			System.out.println(INVALID_OPTION_ERROR);
+		}
+	}
 
-			previousLength = 0;
-			originallimit = limit;
+	private static void printOptionsForUser() {
+		System.out.println("1. Add a new title");
+		System.out.println("2. Add a new word to ignore");
+		System.out.println("3. Add titles and ignored words from a text file");
+		System.out
+				.println("4. View existing list of tiles and words to ignore");
+		System.out.println("5. View current result set");
+		System.out.println("6. Exit");
+		System.out.println();
+	}
 
-			this.addKeyListener(new KeyAdapter() {
-				public void keyTyped(KeyEvent e) {
+	private static void printResultList() {
+		List<String> resultSet = _controller.getCurrentResult();
+		if (!resultSet.isEmpty())
+			printList(_controller.getCurrentResult(), RESULT_SET);
+	}
 
-					JTextField textField = (JTextField) e.getSource();
-					length = textField.getText().length();
+	private static void getNewTitle() {
+		System.out.print("Enter new title: ");
+		sc.nextLine();
+		String title = sc.nextLine();
+		_controller.addTitle(title);
+	}
 
-					if (length >= originallimit) {
+	private static void getNewIgnoredWord() {
+		System.out.print("Enter new word to ignore: ");
+		sc.nextLine();
+		String ignoredWord = sc.nextLine();
+		_controller.addWordToIgnore(ignoredWord);
+	}
 
-						if (length > previousLength) {
-							controlPanel.setSize(new Dimension(controlPanel
-									.getWidth() + 5, controlPanel.getHeight()));
-						} else {
-							if (length < previousLength)
-								controlPanel.setSize(new Dimension(controlPanel
-										.getWidth() - 5, controlPanel.getHeight()));
-						}
-						previousLength = length;
-
-					} else {
-						controlPanel.setSize(controlPanel.getPreferredSize());
-					}
-				}
-			});
+	private static void getInputFromFile() {
+		boolean invalidFileName = true;
+		System.out.print("Enter filename for reading words to ignore: ");
+	    sc.nextLine();
+		while (invalidFileName) {		
+			String ignoreWordsFileName = sc.nextLine();
+			invalidFileName = false;
+			if (_controller.loadInformationFromFiles("", ignoreWordsFileName) == null) {
+				printErrorMsg();
+				invalidFileName = true;
+			}
+		}
+		invalidFileName = true;
+		System.out.print("Enter filename for reading titles: ");
+		sc.nextLine();
+		while (invalidFileName) {			
+			String titlesFileName = sc.nextLine();
+			invalidFileName = false;
+			if (_controller.loadInformationFromFiles(titlesFileName, "") == null) {
+				printErrorMsg();
+				invalidFileName = true;
+			}
 		}
 
-	}*/
+	}
+
+	private static void printErrorMsg() {
+		System.out.println("File path specified is invalid");
+		System.out.print("Re-enter file name: ");
+	}
+
+	private static void printList(List<String> list, String header) {
+
+		if (list.isEmpty())
+			System.out.println("Empty " + header);
+		else {
+			System.out.println();
+			System.out.println("-------" + header + "-------");
+			int i = 1;
+			for (String element : list)
+				System.out.println(i++ + ". " + element);
+
+			System.out.println();
+		}
+	}
+
 }

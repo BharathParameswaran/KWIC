@@ -18,9 +18,8 @@ public class Capitalizer {
 	 */
 	public static String capitalize(String input, List<String> wordsToIgnore) {
 		assert input != null : "Unexpected null string to be capitalized";
-		assert input.length()!=0 : "Unexpected empty string to be capitalized";
+		assert input.trim().length()!=0 : "Unexpected empty string to be capitalized";
 		assert wordsToIgnore != null : "Unexpected null for list of ignored words";
-		
 		String[] words = input.split(" ");
 		String output = "";
 		for (String word : words) {
@@ -32,7 +31,7 @@ public class Capitalizer {
 			}
 			output += word + " ";
 		}
-		output = output.substring(0, output.length()-1);
+		output = output.trim();
 		return output;
 	}
 
