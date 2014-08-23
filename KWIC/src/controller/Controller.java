@@ -211,6 +211,13 @@ public class Controller {
 		return _titlesGiven;
 	}
 	
+	//--------------------------------------------------
+	
+	public void reset() {
+		_resultList.clear();
+		_titlesGiven.clear();
+		_wordsToIgnore.clear();
+	}
 	
 	///////////////////////////////////////////////////////////
 	///////////// Routines using the components ///////////////
