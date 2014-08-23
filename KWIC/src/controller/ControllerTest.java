@@ -16,10 +16,31 @@ import org.junit.Test;
  * @author thyagesh93
  *
  */
+
 public class ControllerTest {
 
 	@Test
-	public void testGetIgnoreList() {
+	public void testControllerStringString() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testLoadInformationFromFiles() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testRemoveTitle() {
+		fail("Not yet implemented");
+	}
+	
+	@Test
+	public void testGetCurrentResult() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testGetIgnoreWordsList() {
 		testGetIgnoreListWithDefaultConstructor();
 		testGetIgnoreListWithCustomConstructor();
 	}
@@ -31,13 +52,15 @@ public class ControllerTest {
 	}
 
 	private void testGetIgnoreListWithCustomConstructor() {
+		Controller controller = new Controller();
 		List<String> wordsToIgnore = new ArrayList<String>();
+		
 		wordsToIgnore.add("of");
 		wordsToIgnore.add("a");
 		wordsToIgnore.add("the");
 		wordsToIgnore.add("to");
+		controller.addWordsToIgnore(wordsToIgnore);
 		
-		Controller controller = new Controller();
 		List<String> actualList = controller.getIgnoreWordsList();
 		assertEquals(4, actualList.size());
 		
@@ -45,55 +68,53 @@ public class ControllerTest {
 			assertEquals(wordsToIgnore.get(i), actualList.get(i));
 		}
 	}
-	
+
+	/**
+	 * Test method for {@link controller.Controller#addWordsToIgnore(java.util.List)}.
+	 */
 	@Test
-	public void testAddWordToIgnoreList() {
-		testAddWordsToIgnoreListNullInput();
-		testAddWordsToIgnoreListEmptyInput();
-		testAddWordsToIgnoreListTypicalInput();	
-		testAddWordsToIgnoreListRepeatedInput();
+	public void testAddWordsToIgnore() {
+		testAddWordsToIgnoreNullInput();
+		testAddWordsToIgnoreEmptyInput();
+		testAddWordsToIgnoreTypicalInput();	
+		testAddWordsToIgnoreRepeatedInput();
 	}
 
-	private void testAddWordsToIgnoreListNullInput() {
+	private void testAddWordsToIgnoreNullInput() {
 		Controller controller = new Controller();
-		
-		try {
-			controller.addWordToIgnoreList(null);
-			assertFalse("Expected AssertionError", true);
-		} catch (AssertionError ae) {
-			assertEquals("Unexpected null word given", ae.getMessage());
-		}
-		
+		assertNull(controller.addWordsToIgnore(null));
+	}
+	
+	private void testAddWordsToIgnoreEmptyInput() {
+		Controller controller = new Controller();
+		// should run without any errors
+		List<String> result = controller.addWordsToIgnore(new ArrayList<String>());
+		assertEquals(0, result.size());
 	}
 
-	private void testAddWordsToIgnoreListEmptyInput() {
+	private void testAddWordsToIgnoreRepeatedInput() {
 		Controller controller = new Controller();
+		List<String> wordsToAdd = new ArrayList<String>();
+		wordsToAdd.add("of");
+		wordsToAdd.add("Of");
+		wordsToAdd.add("OF");
 		
-		try {
-			controller.addWordToIgnoreList("");
-			assertFalse("Expected AssertionError", true);
-		} catch (AssertionError ae) {
-			assertEquals("Unexpected empty word given", ae.getMessage());
-		}
-		
-	}
-
-	private void testAddWordsToIgnoreListRepeatedInput() {
-		Controller controller = new Controller();
-		controller.addWordToIgnoreList("of");
-		controller.addWordToIgnoreList("Of");
-		controller.addWordToIgnoreList("OF");
+		controller.addWordsToIgnore(wordsToAdd);
 		
 		assertEquals(1, controller.getIgnoreWordsList().size());
 		assertEquals("of", controller.getIgnoreWordsList().get(0));
 	}
 
-	private void testAddWordsToIgnoreListTypicalInput() {
+	private void testAddWordsToIgnoreTypicalInput() {
 		Controller controller = new Controller();
-		controller.addWordToIgnoreList("of");
-		controller.addWordToIgnoreList("a");
-		controller.addWordToIgnoreList("the");
-		controller.addWordToIgnoreList("to");
+		List<String> wordsToAdd = new ArrayList<String>();
+		
+		wordsToAdd.add("of");
+		wordsToAdd.add("a");
+		wordsToAdd.add("the");
+		wordsToAdd.add("to");
+		controller.addWordsToIgnore(wordsToAdd);
+		
 		List<String> actualList = controller.getIgnoreWordsList();
 		
 		assertEquals(4, actualList.size());
@@ -112,24 +133,20 @@ public class ControllerTest {
 
 	private void testRemoveWordFromIgnoreListNullInput() {
 		Controller controller = new Controller();
-		
-		try {
-			controller.removeWordFromIgnoreList(null);
-			assertFalse("Expected AssertionError", true);
-		} catch (AssertionError ae) {
-			assertEquals("Unexpected null word given", ae.getMessage());
-		}
+		assertFalse(controller.removeIgnoreWord(null));
 	}
 	
 	private void testRemoveWordFromIgnoreListNonExistentWord() {
+		Controller controller = new Controller();
+		
 		List<String> wordsToIgnore = new ArrayList<String>();
 		wordsToIgnore.add("of");
 		wordsToIgnore.add("a");
 		wordsToIgnore.add("the");
 		wordsToIgnore.add("to");
+		controller.addWordsToIgnore(wordsToIgnore);
 		
-		Controller controller = new Controller();
-		controller.removeWordFromIgnoreList("_");
+		controller.removeIgnoreWord("_");
 		List<String> actualList = controller.getIgnoreWordsList();
 		
 		assertEquals(4, actualList.size());
@@ -141,14 +158,16 @@ public class ControllerTest {
 	}
 
 	private void testRemoveWordFromIgnoreListTypicalInput() {
+		Controller controller = new Controller();
+		
 		List<String> wordsToIgnore = new ArrayList<String>();
 		wordsToIgnore.add("of");
 		wordsToIgnore.add("a");
 		wordsToIgnore.add("the");
 		wordsToIgnore.add("to");
+		controller.addWordsToIgnore(wordsToIgnore);
 		
-		Controller controller = new Controller();
-		controller.removeWordFromIgnoreList("of");
+		controller.removeIgnoreWord("of");
 		List<String> actualList = controller.getIgnoreWordsList();
 		
 		assertEquals(3, actualList.size());
@@ -219,14 +238,6 @@ public class ControllerTest {
 	}
 
 	/**
-	 * Test method for {@link controller.Controller#addWordsToIgnore(java.util.List)}.
-	 */
-	@Test
-	public void testAddWordsToIgnore() {
-		fail("Not yet implemented");
-	}
-
-	/**
 	 * Test method for {@link controller.Controller#addWordToIgnoreList(java.lang.String)}.
 	 */
 	@Test
@@ -239,17 +250,17 @@ public class ControllerTest {
 	private void testAddWordToIgnoreNullInput() {
 		Controller controller = new Controller();
 		
-		assertFalse(controller.addWordToIgnoreList(null));
+		assertFalse(controller.addWordToIgnore(null));
 		assertEquals(new ArrayList<String>(), controller.getIgnoreWordsList());		
 	}
 
 	private void testAddWordToIgnoreEmptyInput() {
 		Controller controller = new Controller();
 		
-		assertFalse(controller.addWordToIgnoreList(""));
+		assertFalse(controller.addWordToIgnore(""));
 		assertEquals(new ArrayList<String>(), controller.getIgnoreWordsList());
 		
-		assertFalse(controller.addWordToIgnoreList(" "));
+		assertFalse(controller.addWordToIgnore(" "));
 		assertEquals(new ArrayList<String>(), controller.getIgnoreWordsList());
 		
 	}
@@ -259,20 +270,12 @@ public class ControllerTest {
 		List<String> expectedOutput = new ArrayList<String>();
 		
 		expectedOutput.add("word");
-		assertTrue(controller.addWordToIgnoreList("word"));
+		assertTrue(controller.addWordToIgnore("word"));
 		assertEquals(expectedOutput, controller.getIgnoreWordsList());
 
 		expectedOutput.add("newword");
-		assertTrue(controller.addWordToIgnoreList("newword"));
+		assertTrue(controller.addWordToIgnore("newword"));
 		assertEquals(expectedOutput, controller.getIgnoreWordsList());
-	}
-
-	/**
-	 * Test method for {@link controller.Controller#getCurrentResult()}.
-	 */
-	@Test
-	public void testGetCurrentResult() {
-		fail("Not yet implemented");
 	}
 
 }

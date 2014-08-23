@@ -1,11 +1,14 @@
 package controller;
 
+import inputReader.FileReader;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import logic.Alphabetizer;
 import logic.Capitalizer;
 import logic.Filter;
+import logic.Merger;
 import logic.Rotator;
 
 /**
@@ -23,8 +26,35 @@ public class Controller {
 	public Controller() {
 		_titlesGiven = new ArrayList<String>();
 		_wordsToIgnore = new ArrayList<String>();
+		_resultList = new ArrayList<String>();
 	}
 	
+	public Controller(String titlesFileName, String wordsToIgnoreFileName) {
+		this();
+		loadInformationFromFiles(titlesFileName, wordsToIgnoreFileName);
+	}
+	
+	public List<String> loadInformationFromFiles(String titlesFileName,
+			String wordsToIgnoreFileName) {
+		List<String> newIgnoreWords = FileReader.readFromFile(wordsToIgnoreFileName);
+		List<String> newTitles = FileReader.readFromFile(titlesFileName);
+		
+		boolean couldNotLoadIgnoreWords = newIgnoreWords == null && !wordsToIgnoreFileName.isEmpty();
+		boolean couldNotLoadTitles = newTitles == null && !titlesFileName.isEmpty();
+		
+		if (couldNotLoadIgnoreWords || couldNotLoadTitles) {
+			return null;
+		}
+		
+		List<String> erroneousStrings;
+		erroneousStrings = addWordsToIgnore(newIgnoreWords);
+		erroneousStrings.addAll(addTitles(newTitles));
+		
+		return erroneousStrings;
+	}
+	
+	//--------------------------------------------------
+
 	/**
 	 * Tries to add all the given titles,
 	 * returns those titles that had issues
@@ -33,12 +63,17 @@ public class Controller {
 	 */
 	public List<String> addTitles(List<String> titles) {
 		List<String> result = new ArrayList<String>();
+		List<String> newTitles = new ArrayList<String>();
+		
 		for (String title : titles) {
-			if (!addTitle(title)) {
+			if (!addTitle(title, false) || title != null) {
 				result.add(title);
+			} else {
+				newTitles.add(title);
 			}
 		}
 		
+		updateResultsListForNewTitles(newTitles);
 		return result;
 	}
 	
@@ -48,13 +83,44 @@ public class Controller {
 	 * @param title
 	 * @return
 	 */
-	public boolean addTitle(String title) {
+	private boolean addTitle(String title, boolean updateResult) {
 		if (title == null) return false;
 		if (title.isEmpty()) return false;
 		
 		_titlesGiven.add(title);
+		if (updateResult) {
+			updateResultsListForNewTitle(title);
+		}
 		return true;
 	}
+	
+	public boolean addTitle(String title) {
+		return addTitle(title, true);
+	}
+	
+	//--------------------------------------------------
+	
+	/**
+	 * Tries to remove the given title,
+	 * if the title is found and removed,
+	 * the results are updated and returns true.
+	 * 
+	 * Returns false if there was an issue
+	 * @param title
+	 * @return
+	 */
+	public boolean removeTitle(String title) {
+		if (title == null) return false;
+		if (title.isEmpty()) return false;
+		
+		if(_titlesGiven.remove(title)) {
+			updateResultsListForRemovedTitle(title);
+		}
+		
+		return true;
+	}
+	
+	//--------------------------------------------------
 	
 	/**
 	 * Adds the given word as an ignore Word
@@ -64,14 +130,17 @@ public class Controller {
 	 * @return
 	 */
 	public List<String> addWordsToIgnore(List<String> words) {
+		if (words ==  null) return null;
+		
 		List<String> result = new ArrayList<String>();
 		
 		for(String word : words) {
-			if(addWordToIgnoreList(word)) {
+			if(addWordToIgnoreList(word, false)) {
 				result.add(word);
 			}
 		}
 		
+		updateResultsListForChangedIgnoreWordList();
 		return result;
 	}
 	
@@ -82,37 +151,36 @@ public class Controller {
 	 * @param words
 	 * @return
 	 */
-	public boolean addWordToIgnoreList(String word) {
+	private boolean addWordToIgnoreList(String word, boolean updateResult) {
 		if (word == null) return false;
 		if (word.trim().isEmpty()) return false;
 		
 		if (!_wordsToIgnore.contains(word.toLowerCase())) {
 			_wordsToIgnore.add(word.toLowerCase());
+			if (updateResult) {
+				updateResultsListForChangedIgnoreWordList();
+			}
 		}
-		
-		updateResult();
 		return true;
 	}
 	
-	public void removeWordFromIgnoreList(String word) {
-		assert word != null : "Unexpected null word given";
-		
-		_wordsToIgnore.remove(word);
-		updateResult();
+	public boolean addWordToIgnore(String title) {
+		return addWordToIgnoreList(title, true);
 	}
 	
-	private void updateResult() {
-		List<String> intermediateResult = new ArrayList<String>();
-		for(String s : _titlesGiven) {
-			intermediateResult.add(Capitalizer.capitalize(s, _wordsToIgnore));
-		}
+	//--------------------------------------------------
+
+	public boolean removeIgnoreWord(String word) {
+		if (word == null) return false;
+		if (word.trim().isEmpty()) return false;
 		
-		intermediateResult = Rotator.rotateList(intermediateResult);
-		intermediateResult = Filter.filterList(intermediateResult, _wordsToIgnore);
-		intermediateResult = Alphabetizer.alphabetize(intermediateResult);
-		// intermediateResult = Merger.merge(intermediateResult, _resultList);
-		_resultList = intermediateResult;		
+		_wordsToIgnore.remove(word);
+		updateResultsListForChangedIgnoreWordList();
+		
+		return true;
 	}
+	
+	//--------------------------------------------------
 
 	public List<String> getIgnoreWordsList() {
 		return _wordsToIgnore;
@@ -132,5 +200,68 @@ public class Controller {
 	 */
 	public List<String> getGivenTitles() {
 		return _titlesGiven;
+	}
+	
+	
+	///////////////////////////////////////////////////////////
+	///////////// Routines using the components ///////////////
+	///////////////////////////////////////////////////////////
+	
+	/**
+	 * This method is run when a new ignore word 
+	 * has been added.
+	 * 
+	 * @Precondition: 
+	 * 		Assumes that the new word has
+	 * 		been added to the field _wordsToIgnore
+	 */
+	private void updateResultsListForChangedIgnoreWordList() {
+		if (_resultList.isEmpty()) return;
+		
+		_resultList = Capitalizer.capitalizeList(_resultList, _wordsToIgnore);
+		// no need to rotate as all combinations are already in list
+		_resultList = Filter.filterList(_resultList, _wordsToIgnore);
+		// the list is already alphabetized
+		// no need to merge
+	}
+	
+	/**
+	 * This method is run when a new title is provided
+	 */
+	private void updateResultsListForNewTitles(List<String> newTitles) {
+		assert newTitles != null : "Unexpected null list given as titles";
+		if (newTitles.isEmpty()) return;
+		
+		List<String> intermediateResult = Capitalizer.capitalizeList(newTitles, _wordsToIgnore);
+		intermediateResult = Rotator.rotateList(intermediateResult);
+		intermediateResult = Filter.filterList(intermediateResult, _wordsToIgnore);
+		intermediateResult = Alphabetizer.alphabetize(intermediateResult);
+		
+		_resultList = Merger.mergeTitlesToExistingList(intermediateResult, _resultList);
+	}
+
+	private void updateResultsListForNewTitle(String title) {
+		assert title != null : "Unexpected null given as title";
+		if (title.isEmpty()) return;
+		
+		List<String> newTitles = new ArrayList<String>();
+		newTitles.add(title);
+		updateResultsListForNewTitles(newTitles);
+	}
+	
+	/**
+	 * This method is run when a title is removed
+	 */
+	private void updateResultsListForRemovedTitle(String removedTitle) {
+		assert removedTitle != null : "Unexpected null given as removed title";
+		if (removedTitle.isEmpty()) return;
+		
+		String capitalizedString= Capitalizer.capitalize(removedTitle, _wordsToIgnore);
+		List<String> intermediateResult = Rotator.rotate(capitalizedString);
+		List<String> stringsToIgnore = new ArrayList<String>();
+		stringsToIgnore.addAll(_wordsToIgnore);
+		stringsToIgnore.addAll(intermediateResult);
+		
+		_resultList = Filter.filterList(_resultList, _wordsToIgnore);
 	}
 }

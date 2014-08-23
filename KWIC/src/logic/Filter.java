@@ -7,14 +7,22 @@ public class Filter {
 	
 	private static final String DELIMITER = " ";
 	
-	public static List<String> filterList(List<String> listToFilter, List<String> wordsToIgnore) {
+	/**
+	 * Filters the list and returns only those elements that
+	 * do not start with and string in the given list of
+	 * stringsToIgnore
+	 * @param listToFilter
+	 * @param stringsToIgnore
+	 * @return
+	 */
+	public static List<String> filterList(List<String> listToFilter, List<String> stringsToIgnore) {
 		assert listToFilter != null : "Unexpected null list to filter";
-		assert wordsToIgnore != null : "Unexpected null for list of ignore words";
+		assert stringsToIgnore != null : "Unexpected null for list of ignore words";
 		
 		List<String> outputList = new ArrayList<String>(); 
 		
 		for(String s : listToFilter) {
-			if(startsWithKeyword(s, wordsToIgnore)) {
+			if(startsWithKeyword(s, stringsToIgnore)) {
 				outputList.add(s);
 			}
 		}
