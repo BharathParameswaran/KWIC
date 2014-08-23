@@ -11,7 +11,7 @@ class Ui {
 	private static final String WORDS_TO_IGNORE_LIST = "List of words to ignore";
 	private static final String TITLES_LIST = "List of titles";
 	private static final String RESULT_SET = "Result Set";
-	private static final int EXIT_OPTION = 6;
+	private static final int EXIT_OPTION = 7;
 	private static final int INVALID_OPTION = -1;
 	private static Controller _controller = new Controller();
 	private static Scanner sc = new Scanner(System.in);
@@ -37,6 +37,7 @@ class Ui {
 		System.out.print("Enter your option: ");
 		try {
 			option = sc.nextInt();
+			sc.nextLine();
 		} catch (Exception e) {
 			sc.nextLine();
 			System.out.println(INVALID_OPTION_ERROR);
@@ -67,10 +68,18 @@ class Ui {
 			printList(_controller.getCurrentResult(), RESULT_SET);
 			break;
 		case 6:
+			resetLists();
+			break;
+		case 7:
 			System.exit(0);
 		default:
 			System.out.println(INVALID_OPTION_ERROR);
 		}
+	}
+	
+	private static void resetLists() {
+		
+		System.out.println("All lists reset successfully!");
 	}
 
 	private static void printOptionsForUser() {
@@ -80,7 +89,8 @@ class Ui {
 		System.out
 				.println("4. View existing list of tiles and words to ignore");
 		System.out.println("5. View current result set");
-		System.out.println("6. Exit");
+		System.out.println("6. Reset lists");
+		System.out.println("7. Exit");
 		System.out.println();
 	}
 
@@ -92,42 +102,57 @@ class Ui {
 
 	private static void getNewTitle() {
 		System.out.print("Enter new title: ");
-		sc.nextLine();
 		String title = sc.nextLine();
 		_controller.addTitle(title);
 	}
 
 	private static void getNewIgnoredWord() {
 		System.out.print("Enter new word to ignore: ");
-		sc.nextLine();
 		String ignoredWord = sc.nextLine();
 		_controller.addWordToIgnore(ignoredWord);
 	}
 
 	private static void getInputFromFile() {
-		boolean invalidFileName = true;
 		System.out.print("Enter filename for reading words to ignore: ");
-	    sc.nextLine();
-		while (invalidFileName) {		
-			String ignoreWordsFileName = sc.nextLine();
-			invalidFileName = false;
-			if (_controller.loadInformationFromFiles("", ignoreWordsFileName) == null) {
-				printErrorMsg();
-				invalidFileName = true;
-			}
-		}
-		invalidFileName = true;
+		readWordsToIgnore();
 		System.out.print("Enter filename for reading titles: ");
-		sc.nextLine();
-		while (invalidFileName) {			
-			String titlesFileName = sc.nextLine();
-			invalidFileName = false;
-			if (_controller.loadInformationFromFiles(titlesFileName, "") == null) {
+		readTitles();
+	}
+
+	private static void readWordsToIgnore() {
+		boolean isInvalidFileName = true;
+		while (isInvalidFileName) {		
+			String ignoreWordsFileName = sc.nextLine();
+			isInvalidFileName = false;
+			List<String> errors  =   _controller.loadInformationFromFiles("", ignoreWordsFileName);
+			if (errors == null) {
 				printErrorMsg();
-				invalidFileName = true;
+				isInvalidFileName = true;
+			}
+			else if(!errors.isEmpty()){
+				System.out.println("The follwing could not be added-");
+				for(String title: errors)
+					System.out.println(title);
 			}
 		}
-
+	}
+	
+	private static void readTitles() {
+		boolean isInvalidFileName = true;
+		while (isInvalidFileName) {			
+			String titlesFileName = sc.nextLine();
+			isInvalidFileName = false;
+			List<String> errors = _controller.loadInformationFromFiles(titlesFileName, "");
+			if (errors == null) {
+				printErrorMsg();
+				isInvalidFileName = true;
+			}
+			else if(!errors.isEmpty()){
+				System.out.println("The follwing could not be added-");
+				for(String title: errors)
+					System.out.println(title);
+			}
+		}
 	}
 
 	private static void printErrorMsg() {
