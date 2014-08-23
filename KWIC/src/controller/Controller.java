@@ -146,7 +146,7 @@ public class Controller {
 		List<String> result = new ArrayList<String>();
 		
 		for(String word : words) {
-			if(addWordToIgnoreList(word, false)) {
+			if(!addWordToIgnoreList(word, false)) {
 				result.add(word);
 			}
 		}
@@ -211,6 +211,13 @@ public class Controller {
 		return _titlesGiven;
 	}
 	
+	//--------------------------------------------------
+	
+	public void reset() {
+		_resultList.clear();
+		_titlesGiven.clear();
+		_wordsToIgnore.clear();
+	}
 	
 	///////////////////////////////////////////////////////////
 	///////////// Routines using the components ///////////////
