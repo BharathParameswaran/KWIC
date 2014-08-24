@@ -50,11 +50,9 @@ public class FileReaderTest {
 
 	private void createRequiredFiles() {
 		File theDir = new File("tmp");
-		boolean result = false;
 		if (!theDir.exists()) {
 			try {
 				theDir.mkdir();
-				result = true;
 			} catch (SecurityException se) {
 
 			}

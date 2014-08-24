@@ -34,26 +34,31 @@ public class Merger {
 
 	private static void mergeUsingBinarySearch(String title,
 			List<String> kwicTitleIndex, int start, int end) {
-
 		if (start <= end) {
 			int mid = (start + end) / 2;
 
 			if (kwicTitleIndex.get(mid).compareToIgnoreCase(title) > 0) {
-				if (start == end) {
+				if (start == mid) {
 					kwicTitleIndex.add(mid, title);
-				} else if (mid == 0)
+					System.out.println("inserted:" + title);
+				} else if (mid == 0) {
 					kwicTitleIndex.add(0, title);
+					System.out.println("inserted:" + title);
+				}
 				else
 					mergeUsingBinarySearch(title, kwicTitleIndex, start,
 							mid - 1);
 			}
 
 			else if (kwicTitleIndex.get(mid).compareToIgnoreCase(title) <= 0) {
-				if (start == end)
+				if (start == mid)
 					if (mid != kwicTitleIndex.size() - 1) {
 						kwicTitleIndex.add(mid + 1, title);
-					} else
+						System.out.println("inserted:" + title);
+					} else {
 						kwicTitleIndex.add(title);
+						System.out.println("inserted:" + title);
+					}
 
 				else
 					mergeUsingBinarySearch(title, kwicTitleIndex, mid + 1, end);
