@@ -13,13 +13,13 @@ import org.junit.Test;
  * @author Bharath
  * 
  */
-public class MergerTest {
+public class KWICMergerTest {
 
 	@Test
 	public void testMerger() {
 		testMethodForNullInput();
 		testMethodForEmptyInput();
-		//testMethodForCornerCases();
+		testMethodForCornerCases();
 		testMethodForTypicalInput();
 	}
 
@@ -34,14 +34,14 @@ public class MergerTest {
 		titleList.add("First title");
 
 		try {
-			Merger.mergeTitlesToExistingList(null, titleList);
+			KWICMerger.mergeTitlesToExistingList(null, titleList);
 			assertFalse("Expected AssertionError", true);
 		} catch (AssertionError ae) {
 			assertEquals("Unexpected null list to be merged", ae.getMessage());
 		}
 
 		try {
-			Merger.mergeTitlesToExistingList(titleList, null);
+			KWICMerger.mergeTitlesToExistingList(titleList, null);
 			assertFalse("Expected AssertionError", true);
 		} catch (AssertionError ae) {
 			assertEquals("Unexpected null list to be merged", ae.getMessage());
@@ -60,11 +60,11 @@ public class MergerTest {
 		mergedList.add("Man of Steel");
 		mergedList.add("the Day after Tomorrow");
 
-		assertEquals(mergedList, Merger.mergeTitlesToExistingList(newTitleList,
+		assertEquals(mergedList, KWICMerger.mergeTitlesToExistingList(newTitleList,
 				existingTitleList));
 
-		assertEquals(mergedList, Merger.mergeTitlesToExistingList(
-				existingTitleList, newTitleList));
+		assertEquals(mergedList, KWICMerger.mergeTitlesToExistingList(newTitleList,
+				existingTitleList));
 
 	}
 
@@ -78,7 +78,7 @@ public class MergerTest {
 		mergedList.add("Fast and Furious");
 		mergedList.add("Man of Steel");
 		mergedList.add("the Day after Tomorrow");
-		assertEquals(mergedList, Merger.mergeTitlesToExistingList(newTitleList,
+		assertEquals(mergedList, KWICMerger.mergeTitlesToExistingList(newTitleList,
 				existingTitleList));
 
 	}
@@ -94,7 +94,7 @@ public class MergerTest {
 		mergedList.add("Fast and Furious");
 		mergedList.add("Man of Steel");
 
-		assertEquals(mergedList, Merger.mergeTitlesToExistingList(newTitleList,
+		assertEquals(mergedList, KWICMerger.mergeTitlesToExistingList(newTitleList,
 				existingTitleList));
 
 	}
@@ -121,7 +121,7 @@ public class MergerTest {
 		mergedList.add("The dark Knight Lowers");
 		mergedList.add("The dark Knight Rises");
 
-		assertEquals(mergedList, Merger.mergeTitlesToExistingList(newTitleList,
+		assertEquals(mergedList, KWICMerger.mergeTitlesToExistingList(newTitleList,
 				existingTitleList));
 
 	}

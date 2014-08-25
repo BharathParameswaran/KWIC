@@ -3,7 +3,7 @@ package logic;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Filter {
+public class KWICFilterIgnoreWords {
 	
 	private static final String DELIMITER = " ";
 	

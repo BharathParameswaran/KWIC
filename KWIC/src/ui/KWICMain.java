@@ -3,9 +3,9 @@ package ui;
 import java.util.List;
 import java.util.Scanner;
 
-import controller.Controller;
+import controller.KWICController;
 
-class Ui {
+class KWICMain {
 
 	private static final String RE_ENTER_FILE_NAME = "Re-enter file name: ";
 	private static final String INVALID_FILE_PATH = "File path specified is invalid";
@@ -16,13 +16,13 @@ class Ui {
 	private static final String ENTER_NEW_TITLE = "Enter new title: ";
 	private static final String RESET_SUCCESSFUL = "All lists reset successfully!";
 	private static final String ASK_USER_OPTION = "Enter your option: ";
-	private static final String INVALID_OPTION_ERROR = "Please enter a valid integer between 1 and 6";
+	private static final String INVALID_OPTION_ERROR = "Please enter a valid integer between 1 and 7";
 	private static final String WORDS_TO_IGNORE_LIST = "List of words to ignore";
 	private static final String TITLES_LIST = "List of titles";
 	private static final String RESULT_SET = "Result Set";
 	private static final int EXIT_OPTION = 7;
 	private static final int INVALID_OPTION = -1;
-	private static Controller _controller = new Controller();
+	private static KWICController _controller = new KWICController();
 	private static Scanner sc = new Scanner(System.in);
 
 	private static String[] options = { "1. Add a new title",
@@ -88,7 +88,7 @@ class Ui {
 			resetLists();
 			break;
 		case 7:
-			System.exit(0);
+			return;
 		default:
 			System.out.println(INVALID_OPTION_ERROR);
 		}

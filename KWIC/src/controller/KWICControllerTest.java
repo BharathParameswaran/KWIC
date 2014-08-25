@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import controller.Controller;
+import controller.KWICController;
 
 import org.junit.Test;
 
@@ -22,7 +22,7 @@ import org.junit.Test;
  *
  */
 
-public class ControllerTest {
+public class KWICControllerTest {
 
 
 	@Test
@@ -43,7 +43,7 @@ public class ControllerTest {
 
 	private void testControllerStringEmptyInput() {
 		// both empty
-		Controller c = new Controller("", "");
+		KWICController c = new KWICController("", "");
 		List<String> expectedTitlesList = new ArrayList<String>();
 		List<String> expectedIgnoreList = new ArrayList<String>();
 		List<String> expectedResultList = new ArrayList<String>();
@@ -53,7 +53,7 @@ public class ControllerTest {
 		assertEquals(expectedResultList, c.getCurrentResult());
 		
 		// titles empty
-		Controller c1 = new Controller("tmp/validInput.txt", "");
+		KWICController c1 = new KWICController("tmp/validInput.txt", "");
 		expectedTitlesList.add("Line 1");
 		expectedTitlesList.add("Line 2");
 		
@@ -70,7 +70,7 @@ public class ControllerTest {
 		expectedResultList.clear();
 		
 		// ignore words empty
-		Controller c2 = new Controller("", "tmp/validInput.txt");
+		KWICController c2 = new KWICController("", "tmp/validInput.txt");
 		expectedIgnoreList.add("line 1");
 		expectedIgnoreList.add("line 2");
 		
@@ -81,7 +81,7 @@ public class ControllerTest {
 
 	private void testControllerStringInvalidFilesInput() {
 		// both invalid
-		Controller c = new Controller("invalid", "invalid");
+		KWICController c = new KWICController("invalid", "invalid");
 		List<String> expectedTitlesList = new ArrayList<String>();
 		List<String> expectedIgnoreList = new ArrayList<String>();
 		List<String> expectedResultList = new ArrayList<String>();
@@ -91,7 +91,7 @@ public class ControllerTest {
 		assertEquals(expectedResultList, c.getCurrentResult());
 		
 		// one invalid
-		Controller c1 = new Controller("invalid", "");
+		KWICController c1 = new KWICController("invalid", "");
 		
 		assertEquals(expectedTitlesList, c1.getGivenTitles());
 		assertEquals(expectedIgnoreList, c1.getIgnoreWordsList());
@@ -100,7 +100,7 @@ public class ControllerTest {
 
 
 	private void testControllerStringTypicalInput() {
-		Controller c = new Controller("tmp/validInput.txt", "tmp/validInput.txt");
+		KWICController c = new KWICController("tmp/validInput.txt", "tmp/validInput.txt");
 		List<String> expectedTitlesList = new ArrayList<String>();
 		List<String> expectedIgnoreList = new ArrayList<String>();
 		List<String> expectedResultList = new ArrayList<String>();
@@ -188,7 +188,7 @@ public class ControllerTest {
 	}
 
 	/**
-	 * Test method {@link controller.Controller#getIgnoreWordsList(java.util.List)}
+	 * Test method {@link controller.KWICController#getIgnoreWordsList(java.util.List)}
 	 */
 	@Test
 	public void testGetIgnoreWordsList() {
@@ -197,13 +197,13 @@ public class ControllerTest {
 	}
 
 	private void testGetIgnoreListWithDefaultConstructor() {
-		Controller controller = new Controller();
+		KWICController controller = new KWICController();
 		
 		assertEquals(0, controller.getIgnoreWordsList().size());		
 	}
 
 	private void testGetIgnoreListWithCustomConstructor() {
-		Controller controller = new Controller();
+		KWICController controller = new KWICController();
 		List<String> wordsToIgnore = new ArrayList<String>();
 		
 		wordsToIgnore.add("of");
@@ -217,7 +217,7 @@ public class ControllerTest {
 	}
 
 	/**
-	 * Test method for {@link controller.Controller#addWordsToIgnore(java.util.List)}.
+	 * Test method for {@link controller.KWICController#addWordsToIgnore(java.util.List)}.
 	 */
 	@Test
 	public void testAddWordsToIgnore() {
@@ -228,19 +228,19 @@ public class ControllerTest {
 	}
 
 	private void testAddWordsToIgnoreNullInput() {
-		Controller controller = new Controller();
+		KWICController controller = new KWICController();
 		assertNull(controller.addWordsToIgnore(null));
 	}
 	
 	private void testAddWordsToIgnoreEmptyInput() {
-		Controller controller = new Controller();
+		KWICController controller = new KWICController();
 		// should run without any errors
 		List<String> result = controller.addWordsToIgnore(new ArrayList<String>());
 		assertEquals(0, result.size());
 	}
 
 	private void testAddWordsToIgnoreRepeatedInput() {
-		Controller controller = new Controller();
+		KWICController controller = new KWICController();
 		List<String> wordsToAdd = new ArrayList<String>();
 		wordsToAdd.add("of");
 		wordsToAdd.add("Of");
@@ -253,7 +253,7 @@ public class ControllerTest {
 	}
 
 	private void testAddWordsToIgnoreTypicalInput() {
-		Controller controller = new Controller();
+		KWICController controller = new KWICController();
 		List<String> wordsToAdd = new ArrayList<String>();
 		List<String> wordsWithError = new ArrayList<String>();
 		
@@ -270,7 +270,7 @@ public class ControllerTest {
 	}
 	
 	/**
-	 * Test method for {@link controller.Controller#addIgnoreWord(java.lang.String)}.
+	 * Test method for {@link controller.KWICController#addIgnoreWord(java.lang.String)}.
 	 */
 	@Test
 	public void testAddWordToIgnore() {
@@ -281,14 +281,14 @@ public class ControllerTest {
 	}
 
 	private void testAddWordToIgnoreNullInput() {
-		Controller controller = new Controller();
+		KWICController controller = new KWICController();
 		
 		assertFalse(controller.addWordToIgnore(null));
 		assertEquals(new ArrayList<String>(), controller.getIgnoreWordsList());		
 	}
 
 	private void testAddWordToIgnoreEmptyInput() {
-		Controller controller = new Controller();
+		KWICController controller = new KWICController();
 		
 		assertFalse(controller.addWordToIgnore(""));
 		assertEquals(new ArrayList<String>(), controller.getIgnoreWordsList());
@@ -299,7 +299,7 @@ public class ControllerTest {
 	}
 
 	private void testAddWordToIgnoreTypicalInputWithoutTypicalTitles() {
-		Controller controller = new Controller();
+		KWICController controller = new KWICController();
 		List<String> expectedOutput = new ArrayList<String>();
 		
 		expectedOutput.add("word");
@@ -312,7 +312,7 @@ public class ControllerTest {
 	}
 	
 	private void testAddWordToIgnoreTypicalInputWithTypicalTitles() {
-		Controller c = new Controller();
+		KWICController c = new KWICController();
 		c.addTitles(generateTypicalTitles());
 		
 		List<String> ignoreWords = generateTypicalIgnoreWords();
@@ -324,7 +324,7 @@ public class ControllerTest {
 	}
 
 	/**
-	 * Test method for {@link controller.Controller#removeIgnoreWord(java.util.List)}.
+	 * Test method for {@link controller.KWICController#removeIgnoreWord(java.util.List)}.
 	 */
 	@Test
 	public void testRemoveWordFromIgnoreList() {
@@ -335,12 +335,12 @@ public class ControllerTest {
 	}
 
 	private void testRemoveWordFromIgnoreListNullInput() {
-		Controller controller = new Controller();
+		KWICController controller = new KWICController();
 		assertFalse(controller.removeIgnoreWord(null));
 	}
 
 	private void testRemoveWordFromIgnoreListEmptyInput() {
-		Controller controller = new Controller();
+		KWICController controller = new KWICController();
 		
 		assertFalse(controller.removeIgnoreWord(""));
 		assertEquals(new ArrayList<String>(), controller.getIgnoreWordsList());
@@ -351,7 +351,7 @@ public class ControllerTest {
 	}
 	
 	private void testRemoveWordFromIgnoreListNonExistentWord() {
-		Controller controller = new Controller();
+		KWICController controller = new KWICController();
 		
 		List<String> wordsToIgnore = new ArrayList<String>();
 		wordsToIgnore.add("of");
@@ -367,7 +367,7 @@ public class ControllerTest {
 	}
 
 	private void testRemoveWordFromIgnoreListTypicalInput() {
-		Controller controller = new Controller();
+		KWICController controller = new KWICController();
 		
 		List<String> wordsToIgnore = new ArrayList<String>();
 		wordsToIgnore.add("of");
@@ -384,7 +384,7 @@ public class ControllerTest {
 	}
 	
 	/**
-	 * Test method for {@link controller.Controller#getGivenTitles()}.
+	 * Test method for {@link controller.KWICController#getGivenTitles()}.
 	 */
 	@Test
 	public void testGetGivenTitles() {
@@ -393,7 +393,7 @@ public class ControllerTest {
 	}
 	
 	private void testGetGivenTitlesDefaultValue() {
-		Controller c = new Controller();
+		KWICController c = new KWICController();
 		assertEquals(new ArrayList<String>(), c.getGivenTitles());
 	}
 	
@@ -402,7 +402,7 @@ public class ControllerTest {
 	}
 	
 	/**
-	 * Test method for {@link controller.Controller#addTitles(java.util.List)}.
+	 * Test method for {@link controller.KWICController#addTitles(java.util.List)}.
 	 */
 	@Test
 	public void testAddTitles() {
@@ -413,17 +413,17 @@ public class ControllerTest {
 	}
 
 	private void testAddTitlesForNullInput() {
-		Controller c = new Controller();
+		KWICController c = new KWICController();
 		assertNull(c.addTitles(null));
 	}
 
 	private void testAddTitlesForEmptyInput() {
-		Controller c = new Controller();
+		KWICController c = new KWICController();
 		assertEquals(new ArrayList<String>(), c.addTitles(new ArrayList<String>()));
 	}
 
 	private void testAddTitlesForTypicalInputWithoutIgnoreWords() {
-		Controller c = new Controller();
+		KWICController c = new KWICController();
 		List<String> titles = generateTypicalTitles();
 		List<String> failingTitles = new ArrayList<String>();
 		failingTitles.add(" ");
@@ -435,7 +435,7 @@ public class ControllerTest {
 	}
 
 	private void testAddTitlesForTypicalInputWithIgnoreWords() {
-		Controller c = new Controller();
+		KWICController c = new KWICController();
 		c.addWordsToIgnore(generateTypicalIgnoreWords());
 		
 		List<String> titles = generateTypicalTitles();
@@ -512,7 +512,7 @@ public class ControllerTest {
 	}
 
 	/**
-	 * Test method for {@link controller.Controller#addTitle(java.lang.String)}.
+	 * Test method for {@link controller.KWICController#addTitle(java.lang.String)}.
 	 */
 	@Test
 	public void testAddTitle() {
@@ -524,7 +524,7 @@ public class ControllerTest {
 
 	
 	private void testAddTitleNullInput() {
-		Controller c = new Controller();
+		KWICController c = new KWICController();
 		assertFalse(c.addTitle(null));
 		assertEquals(new ArrayList<String>(), c.getGivenTitles());
 		assertEquals(new ArrayList<String>(), c.getCurrentResult());
@@ -532,14 +532,14 @@ public class ControllerTest {
 
 	
 	private void testAddTitleEmptyInput() {
-		Controller c = new Controller();
+		KWICController c = new KWICController();
 		assertFalse(c.addTitle(""));
 		assertEquals(new ArrayList<String>(), c.getGivenTitles());
 		assertEquals(new ArrayList<String>(), c.getCurrentResult());
 	}
 	
 	private void testAddTitleRepeatedInput() {
-		Controller c = new Controller();
+		KWICController c = new KWICController();
 		List<String> expectedResult = new ArrayList<String>();
 		expectedResult.add("Day The");
 		expectedResult.add("The Day");
@@ -554,7 +554,7 @@ public class ControllerTest {
 
 	
 	private void testAddTitleTypicalInput() {
-		Controller c = new Controller();
+		KWICController c = new KWICController();
 		List<String> expectedTitleList = new ArrayList<String>();
 		List<String> expectedResultList = new ArrayList<String>();
 		

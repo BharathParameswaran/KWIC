@@ -1,15 +1,15 @@
 package controller;
 
-import inputReader.FileReader;
+import inputReader.KWICFileReader;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import logic.Alphabetizer;
-import logic.Capitalizer;
-import logic.Filter;
-import logic.Merger;
-import logic.Rotator;
+import logic.KWICAlphabetizer;
+import logic.KWICCapitalizer;
+import logic.KWICFilterIgnoreWords;
+import logic.KWICMerger;
+import logic.KWICRotator;
 
 /**
  * This class manages the flow control of information 
@@ -17,27 +17,27 @@ import logic.Rotator;
  * @author thyagesh93
  *
  */
-public class Controller {
+public class KWICController {
 	private List<String> _titlesGiven;
 	private List<String> _wordsToIgnore;
 	private List<String> _resultList;
 	
 	
-	public Controller() {
+	public KWICController() {
 		_titlesGiven = new ArrayList<String>();
 		_wordsToIgnore = new ArrayList<String>();
 		_resultList = new ArrayList<String>();
 	}
 	
-	public Controller(String titlesFileName, String wordsToIgnoreFileName) {
+	public KWICController(String titlesFileName, String wordsToIgnoreFileName) {
 		this();
 		loadInformationFromFiles(titlesFileName, wordsToIgnoreFileName);
 	}
 	
 	public List<String> loadInformationFromFiles(String titlesFileName,
 			String wordsToIgnoreFileName) {
-		List<String> newIgnoreWords = FileReader.readFromFile(wordsToIgnoreFileName);
-		List<String> newTitles = FileReader.readFromFile(titlesFileName);
+		List<String> newIgnoreWords = KWICFileReader.readFromFile(wordsToIgnoreFileName);
+		List<String> newTitles = KWICFileReader.readFromFile(titlesFileName);
 		
 		boolean couldNotLoadIgnoreWords = newIgnoreWords == null && !wordsToIgnoreFileName.isEmpty();
 		boolean couldNotLoadTitles = newTitles == null && !titlesFileName.isEmpty();
@@ -234,8 +234,8 @@ public class Controller {
 	private void updateResultsListForAddedIgnoreWord() {
 		if (_resultList.isEmpty()) return;
 		
-		_resultList = Filter.filterList(_resultList, _wordsToIgnore);
-		_resultList = Capitalizer.capitalizeList(_resultList, _wordsToIgnore);
+		_resultList = KWICFilterIgnoreWords.filterList(_resultList, _wordsToIgnore);
+		_resultList = KWICCapitalizer.capitalizeList(_resultList, _wordsToIgnore);
 	}
 	
 	/**
@@ -245,12 +245,12 @@ public class Controller {
 		assert newTitles != null : "Unexpected null list given as titles";
 		if (newTitles.isEmpty()) return;
 		
-		List<String> intermediateResult = Capitalizer.capitalizeList(newTitles, _wordsToIgnore);
-		intermediateResult = Rotator.rotateList(intermediateResult);
-		intermediateResult = Filter.filterList(intermediateResult, _wordsToIgnore);
-		intermediateResult = Alphabetizer.alphabetize(intermediateResult);
+		List<String> intermediateResult = KWICCapitalizer.capitalizeList(newTitles, _wordsToIgnore);
+		intermediateResult = KWICRotator.rotateList(intermediateResult);
+		intermediateResult = KWICFilterIgnoreWords.filterList(intermediateResult, _wordsToIgnore);
+		intermediateResult = KWICAlphabetizer.alphabetize(intermediateResult);
 		
-		_resultList = Merger.mergeTitlesToExistingList(intermediateResult, _resultList);
+		_resultList = KWICMerger.mergeTitlesToExistingList(intermediateResult, _resultList);
 	}
 
 	private void updateResultsListForNewTitle(String title) {
@@ -269,12 +269,12 @@ public class Controller {
 		assert removedTitle != null : "Unexpected null given as removed title";
 		if (removedTitle.isEmpty()) return;
 		
-		String capitalizedString= Capitalizer.capitalize(removedTitle, _wordsToIgnore);
-		List<String> intermediateResult = Rotator.rotate(capitalizedString);
+		String capitalizedString= KWICCapitalizer.capitalize(removedTitle, _wordsToIgnore);
+		List<String> intermediateResult = KWICRotator.rotate(capitalizedString);
 		List<String> stringsToIgnore = new ArrayList<String>();
 		stringsToIgnore.addAll(_wordsToIgnore);
 		stringsToIgnore.addAll(intermediateResult);
 		
-		_resultList = Filter.filterList(_resultList, _wordsToIgnore);
+		_resultList = KWICFilterIgnoreWords.filterList(_resultList, _wordsToIgnore);
 	}
 }

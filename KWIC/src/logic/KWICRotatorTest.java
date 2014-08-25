@@ -7,9 +7,9 @@ import java.util.List;
 
 import org.junit.Test;
 
-import logic.Rotator;
+import logic.KWICRotator;
 
-public class RotatorTest {
+public class KWICRotatorTest {
 
 	@Test
 	public void testRotate() {
@@ -22,7 +22,7 @@ public class RotatorTest {
 	private void testMethodForNullInput() {
 
 		try {
-			Rotator.rotate(null);
+			KWICRotator.rotate(null);
 			assertFalse("Expected AssertionError", true);
 		} catch (AssertionError ae) {
 			assertEquals("Unexpected null input to be rotated", ae.getMessage());
@@ -32,7 +32,7 @@ public class RotatorTest {
 	private void testMethodForEmptyInput() {
 
 		try {
-			Rotator.rotate("");
+			KWICRotator.rotate("");
 			assertFalse("Expected AssertionError", true);
 		} catch (AssertionError ae) {
 			assertEquals("Unexpected empty string to be rotated",
@@ -46,7 +46,7 @@ public class RotatorTest {
 		String input = "One";
 		String expectedOutput = "One";
 
-		List<String> actual = Rotator.rotate(input);
+		List<String> actual = KWICRotator.rotate(input);
 		assertEquals(1, actual.size());
 		assertEquals(expectedOutput, actual.get(0));
 
@@ -61,7 +61,7 @@ public class RotatorTest {
 		expectedOutput.add("After tomorrow The day");
 		expectedOutput.add("tomorrow The day After");
 
-		List<String> actual = Rotator.rotate(input);
+		List<String> actual = KWICRotator.rotate(input);
 		assertEquals(4, actual.size());
 		assertEquals(expectedOutput, actual);
 	}

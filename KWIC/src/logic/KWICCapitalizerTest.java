@@ -13,7 +13,7 @@ import org.junit.Test;
  * @author Bharath
  *
  */
-public class CapitalizerTest {
+public class KWICCapitalizerTest {
 
 	@Test
 	public void testCapitalize() {
@@ -34,7 +34,7 @@ public class CapitalizerTest {
 
 	private void testMethodForNullString() {
 		try {
-			Capitalizer.capitalize(null, null);
+			KWICCapitalizer.capitalize(null, null);
 			assertFalse("Expected AssertionError", true);
 		} catch (AssertionError ae) {
 			assertEquals("Unexpected null string to be capitalized",
@@ -48,7 +48,7 @@ public class CapitalizerTest {
 			wordsToIgnore.add("the");
 			wordsToIgnore.add("to");
 
-			Capitalizer.capitalize(null, wordsToIgnore);
+			KWICCapitalizer.capitalize(null, wordsToIgnore);
 			assertFalse("Expected AssertionError", true);
 		} catch (AssertionError ae) {
 			assertEquals("Unexpected null string to be capitalized",
@@ -60,7 +60,7 @@ public class CapitalizerTest {
 	private void testMethodForNullIgnoredWordList() {
 
 		try {
-			Capitalizer.capitalize("Test Input", null);
+			KWICCapitalizer.capitalize("Test Input", null);
 			assertFalse("Expected AssertionError", true);
 		} catch (AssertionError ae) {
 			assertEquals("Unexpected null for list of ignored words",
@@ -78,7 +78,7 @@ public class CapitalizerTest {
 		wordsToIgnore.add("to");
 
 		try {
-			Capitalizer.capitalize("", wordsToIgnore);
+			KWICCapitalizer.capitalize("", wordsToIgnore);
 			assertFalse("Expected AssertionError", true);
 		} catch (AssertionError ae) {
 			assertEquals("Unexpected empty string to be capitalized",
@@ -92,7 +92,7 @@ public class CapitalizerTest {
 		wordsToIgnore.add("the");
 		wordsToIgnore.add("an");
 		String input = "is THE An";
-		assertEquals("is the an", Capitalizer.capitalize(input, wordsToIgnore));
+		assertEquals("is the an", KWICCapitalizer.capitalize(input, wordsToIgnore));
 
 	}
 
@@ -103,7 +103,7 @@ public class CapitalizerTest {
 		wordsToIgnore.add("after");
 		String input = "The Day after tomorrow";
 		assertEquals("the Day after Tomorrow",
-				Capitalizer.capitalize(input, wordsToIgnore));
+				KWICCapitalizer.capitalize(input, wordsToIgnore));
 
 	}
 
@@ -114,7 +114,7 @@ public class CapitalizerTest {
 
 		// test with null titlesList and valid wordsToIgnore List
 		try {
-			Capitalizer.capitalizeList(null, wordsToIgnore);
+			KWICCapitalizer.capitalizeList(null, wordsToIgnore);
 			assertFalse("Expected AssertionError", true);
 		} catch (AssertionError ae) {
 			assertEquals("Unexpected null list to be capitalized",
@@ -126,7 +126,7 @@ public class CapitalizerTest {
 
 		// test with valid titlesList and null wordsToIgnore List
 		try {
-			Capitalizer.capitalizeList(titlesList, null);
+			KWICCapitalizer.capitalizeList(titlesList, null);
 			assertFalse("Expected AssertionError", true);
 		} catch (AssertionError ae) {
 			assertEquals("Unexpected null for list of ignored words",
@@ -142,7 +142,7 @@ public class CapitalizerTest {
 		wordsToIgnore.add("the");
 		List<String> titlesList = new ArrayList<String>();
 		try {
-			Capitalizer.capitalizeList(titlesList, wordsToIgnore);
+			KWICCapitalizer.capitalizeList(titlesList, wordsToIgnore);
 			assertFalse("Expected AssertionError", true);
 		} catch (AssertionError ae) {
 			assertEquals("Unexpected empty list to be capitalized",
@@ -158,7 +158,7 @@ public class CapitalizerTest {
 		List<String> titlesList = new ArrayList<String>();
 		titlesList.add("The Day after tomorrow");
 		assertEquals("the Day after Tomorrow",
-				Capitalizer.capitalizeList(titlesList, wordsToIgnore).get(0));
+				KWICCapitalizer.capitalizeList(titlesList, wordsToIgnore).get(0));
 
 	}
 
@@ -178,7 +178,7 @@ public class CapitalizerTest {
 		outputList.add("Fast and Furious");
 		outputList.add("Man of Steel");
 		assertEquals(outputList,
-				Capitalizer.capitalizeList(titlesList, wordsToIgnore));
+				KWICCapitalizer.capitalizeList(titlesList, wordsToIgnore));
 	}
 
 }

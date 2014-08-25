@@ -11,7 +11,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-public class FileReaderTest {
+public class KWICFileReaderTest {
 
 	@Test
 	public void testFileReader() {
@@ -24,18 +24,18 @@ public class FileReaderTest {
 	}
 
 	private void testForNonExsitentFile() {
-		assertEquals(null, FileReader.readFromFile("tmp/nonExistentFile.txt"));
+		assertEquals(null, KWICFileReader.readFromFile("tmp/nonExistentFile.txt"));
 
 	}
 	
 	private void testForFileWithInvalidExtension() {
-		assertEquals(null, FileReader.readFromFile("tmp/invalid.jpg"));
+		assertEquals(null, KWICFileReader.readFromFile("tmp/invalid.jpg"));
 
 	}
 
 	private void testForExsitentEmptyFile() {
 		List<String> list = new ArrayList<String>();
-		assertEquals(list, FileReader.readFromFile("tmp/emptyFile.txt"));
+		assertEquals(list, KWICFileReader.readFromFile("tmp/emptyFile.txt"));
 
 	}
 
@@ -44,7 +44,7 @@ public class FileReaderTest {
 		list.add("Line 1");
 		list.add("Line 2");
 
-		assertEquals(list, FileReader.readFromFile("tmp/validInput.txt"));
+		assertEquals(list, KWICFileReader.readFromFile("tmp/validInput.txt"));
 
 	}
 

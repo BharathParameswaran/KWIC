@@ -13,7 +13,7 @@ import org.junit.Test;
  * @author Bharath
  *
  */
-public class AlphabetizerTest {
+public class KWICAlphabetizerTest {
 
 	@Test
 	public void testAlphabetize() {
@@ -25,7 +25,7 @@ public class AlphabetizerTest {
 	
 	private void testMethodForNullArray() {
 		try {
-			Alphabetizer.alphabetize(null);
+			KWICAlphabetizer.alphabetize(null);
 			assertFalse("Expected AssertionError", true);
 		} catch (AssertionError ae) {
 			assertEquals("Unexpected null list to be sorted",
@@ -36,7 +36,7 @@ public class AlphabetizerTest {
 	private void testMethodForEmptyArray() {
 		
 		try {
-			Alphabetizer.alphabetize(new ArrayList<String>());
+			KWICAlphabetizer.alphabetize(new ArrayList<String>());
 			assertFalse("Expected AssertionError", true);
 		} catch (AssertionError ae) {
 			assertEquals("Unexpected empty list to be sorted",
@@ -52,7 +52,7 @@ public class AlphabetizerTest {
 		listToSort.add("the Man of Steel");
 		
 		
-		List<String> orderedList = Alphabetizer.alphabetize(listToSort);
+		List<String> orderedList = KWICAlphabetizer.alphabetize(listToSort);
 		String[] expected = {"Fast and Furious", "the Day after Tomorrow", "the Man of Steel"};
 		int i=0;
 		for(String output: orderedList) {
@@ -66,7 +66,7 @@ public class AlphabetizerTest {
 		listToSort.add("the Man of Steel");
 		listToSort.add("Fast and Furious");
 		
-		List<String> orderedList = Alphabetizer.alphabetize(listToSort);
+		List<String> orderedList = KWICAlphabetizer.alphabetize(listToSort);
 		String[] expected = {"Fast and Furious", "the Day after Tomorrow", "the Man of Steel"};
 		int i=0;
 		for(String output: orderedList) {

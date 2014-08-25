@@ -9,7 +9,7 @@ import java.util.List;
  *  
  * @author thyagesh93
  */
-public class Rotator {
+public class KWICRotator {
 	
 	private static final String DELIMITER = " ";
 	

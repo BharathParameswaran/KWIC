@@ -7,7 +7,7 @@ import java.util.List;
  * @author Bharath
  *
  */
-public class Capitalizer {
+public class KWICCapitalizer {
 
 	/**
 	 * Accepts an input string and capitalizes the first letter of keywords and 

@@ -9,7 +9,7 @@ import java.util.List;
  *
  */
 
-public class Alphabetizer {
+public class KWICAlphabetizer {
 
 	/**
 	 * Accepts a list of String and arranges them in alphabetic order

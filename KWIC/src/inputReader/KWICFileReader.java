@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class FileReader {
+public class KWICFileReader {
 
 
 	public static List<String> readFromFile(String pathToFile) {
