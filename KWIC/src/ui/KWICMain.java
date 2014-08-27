@@ -7,6 +7,8 @@ import controller.KWICController;
 
 class KWICMain {
 
+	private static final String EMPTY = "Empty ";
+	private static final String TITLE_DECORATION = "-------";
 	private static final String RE_ENTER_FILE_NAME = "Re-enter file name: ";
 	private static final String INVALID_FILE_PATH = "File path specified is invalid";
 	private static final String ERROR_ADDING_FILES = "The follwing could not be added-";
@@ -177,10 +179,10 @@ class KWICMain {
 	private static void printList(List<String> list, String header) {
 
 		if (list.isEmpty())
-			System.out.println("Empty " + header);
+			System.out.println(EMPTY + header);
 		else {
 			System.out.println();
-			System.out.println("-------" + header + "-------");
+			System.out.println(TITLE_DECORATION + header + TITLE_DECORATION);
 			int i = 1;
 			for (String element : list)
 				System.out.println(i++ + ". " + element);
