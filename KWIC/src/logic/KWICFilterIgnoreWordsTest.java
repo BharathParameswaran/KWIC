@@ -7,45 +7,33 @@ import java.util.List;
 
 import org.junit.Test;
 
+import dataSource.Data;
+
 public class KWICFilterIgnoreWordsTest {
 
 	@Test
 	public void testFilterList() {
-		testFilterListNullInput();
 		testFilterListEmptyListInput();
 		testFilterListTypicalInput();
 	}
 
-	private void testFilterListNullInput() {		
-		try {
-			KWICFilterIgnoreWords.filterList(null, new ArrayList<String>());
-			assertFalse("Expected AssertionError", true);
-		} catch(AssertionError ae) {
-			assertEquals("Unexpected null list to filter", ae.getMessage());
-		}
-		
-		try {
-			KWICFilterIgnoreWords.filterList(new ArrayList<String>(), null);
-			assertFalse("Expected AssertionError", true);
-		} catch(AssertionError ae) {
-			assertEquals("Unexpected null for list of ignore words", ae.getMessage());
-		}
-	}
-
 	private void testFilterListEmptyListInput() {
+		Data data = Data.inst();
+		data.reset();
 		// both lists are empty
-		List<String> wordsToIgnore = new ArrayList<String>();
-		List<String> actualList = KWICFilterIgnoreWords.filterList(new ArrayList<String>(), wordsToIgnore);
+		List<String> actualList = KWICFilterIgnoreWords.filterList();
 		assertEquals(0, actualList.size());
+		assertEquals(0, data.getIntermediateList().size());
 		
 		// list to filter is empty
-		wordsToIgnore.add("to");
+		data.addWordToIgnore("to");
 		
-		actualList = KWICFilterIgnoreWords.filterList(new ArrayList<String>(), wordsToIgnore);
+		actualList = KWICFilterIgnoreWords.filterList();
 		assertEquals(0, actualList.size());
+		assertEquals(0, data.getIntermediateList().size());
 		
 		// ignore words is empty
-		wordsToIgnore.clear();
+		data.reset();
 		List<String> inputList = new ArrayList<String>();
 		
 		inputList.add("The day After tomorrow");
@@ -53,29 +41,33 @@ public class KWICFilterIgnoreWordsTest {
 		inputList.add("After tomorrow The day");
 		inputList.add("tomorrow The day After");
 		
-		actualList = KWICFilterIgnoreWords.filterList(inputList, wordsToIgnore);
+		data.addTitles(inputList);
+		actualList = KWICFilterIgnoreWords.filterList();
 		
-		assertEquals(inputList.size(), actualList.size());
-		for (int i = 0 ; i < inputList.size() ; i ++) {
-			assertEquals(inputList.get(i), actualList.get(i));
-		}
+		assertEquals(inputList, actualList);
+		assertEquals(inputList, data.getIntermediateList());
 	}
 
 	private void testFilterListTypicalInput() {
-		List<String> wordsToIgnore = new ArrayList<String>();
-		wordsToIgnore.add("the");
-		wordsToIgnore.add("after");
+		Data data = Data.inst();
+		data.reset();
 		List<String> inputList = new ArrayList<String>();
 		List<String> expectedList = new ArrayList<String>();
+		
+		assertTrue(data.addWordToIgnore("the"));
+		assertTrue(data.addWordToIgnore("after"));
 		
 		inputList.add("The day After tomorrow");
 		inputList.add("day After tomorrow The");
 		inputList.add("After tomorrow The day");
 		inputList.add("tomorrow The day After");
+		assertEquals(new ArrayList<String>(), data.addTitles(inputList));
 		
 		expectedList.add("day After tomorrow The");
 		expectedList.add("tomorrow The day After");
-		assertEquals(expectedList, KWICFilterIgnoreWords.filterList(inputList, wordsToIgnore));
+		
+		assertEquals(expectedList, KWICFilterIgnoreWords.filterList());
+		assertEquals(expectedList, data.getIntermediateList());
 
 	}
 
