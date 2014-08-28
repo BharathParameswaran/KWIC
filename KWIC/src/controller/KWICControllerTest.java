@@ -322,66 +322,6 @@ public class KWICControllerTest {
 		assertEquals(expectedList, c.getCurrentResult());
 		
 	}
-
-	/**
-	 * Test method for {@link controller.KWICController#removeIgnoreWord(java.util.List)}.
-	 */
-	@Test
-	public void testRemoveWordFromIgnoreList() {
-		testRemoveWordFromIgnoreListNullInput();
-		testRemoveWordFromIgnoreListEmptyInput();
-		testRemoveWordFromIgnoreListNonExistentWord();
-		testRemoveWordFromIgnoreListTypicalInput();
-	}
-
-	private void testRemoveWordFromIgnoreListNullInput() {
-		KWICController controller = new KWICController();
-		assertFalse(controller.removeIgnoreWord(null));
-	}
-
-	private void testRemoveWordFromIgnoreListEmptyInput() {
-		KWICController controller = new KWICController();
-		
-		assertFalse(controller.removeIgnoreWord(""));
-		assertEquals(new ArrayList<String>(), controller.getIgnoreWordsList());
-		
-		assertFalse(controller.removeIgnoreWord(" "));
-		assertEquals(new ArrayList<String>(), controller.getIgnoreWordsList());
-		
-	}
-	
-	private void testRemoveWordFromIgnoreListNonExistentWord() {
-		KWICController controller = new KWICController();
-		
-		List<String> wordsToIgnore = new ArrayList<String>();
-		wordsToIgnore.add("of");
-		wordsToIgnore.add("a");
-		wordsToIgnore.add("the");
-		wordsToIgnore.add("to");
-		controller.addWordsToIgnore(wordsToIgnore);
-		
-		controller.removeIgnoreWord("_");
-		List<String> actualList = controller.getIgnoreWordsList();
-		
-		assertEquals(wordsToIgnore, actualList);		
-	}
-
-	private void testRemoveWordFromIgnoreListTypicalInput() {
-		KWICController controller = new KWICController();
-		
-		List<String> wordsToIgnore = new ArrayList<String>();
-		wordsToIgnore.add("of");
-		wordsToIgnore.add("a");
-		wordsToIgnore.add("the");
-		wordsToIgnore.add("to");
-		controller.addWordsToIgnore(wordsToIgnore);
-		
-		controller.removeIgnoreWord("of");
-		wordsToIgnore.remove("of");
-		
-		List<String> actualList = controller.getIgnoreWordsList();
-		assertEquals(wordsToIgnore, actualList);
-	}
 	
 	/**
 	 * Test method for {@link controller.KWICController#getGivenTitles()}.

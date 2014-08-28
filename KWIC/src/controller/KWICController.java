@@ -4,7 +4,7 @@ import inputReader.KWICFileReader;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import dataSource.Data;
 import logic.KWICAlphabetizer;
 import logic.KWICCapitalizer;
 import logic.KWICFilterIgnoreWords;
@@ -18,15 +18,12 @@ import logic.KWICRotator;
  *
  */
 public class KWICController {
-	private List<String> _titlesGiven;
-	private List<String> _wordsToIgnore;
-	private List<String> _resultList;
+	 Data _data;
 	
 	
 	public KWICController() {
-		_titlesGiven = new ArrayList<String>();
-		_wordsToIgnore = new ArrayList<String>();
-		_resultList = new ArrayList<String>();
+		
+		_data = Data.inst();
 	}
 	
 	public KWICController(String titlesFileName, String wordsToIgnoreFileName) {
@@ -71,18 +68,8 @@ public class KWICController {
 	public List<String> addTitles(List<String> titles) {
 		if (titles == null) return null;
 		
-		List<String> result = new ArrayList<String>();
-		List<String> newTitles = new ArrayList<String>();
-		
-		for (String title : titles) {
-			if (!addTitle(title, false)) {
-				result.add(title);
-			} else {
-				newTitles.add(title);
-			}
-		}
-		
-		updateResultsListForNewTitles(newTitles);
+		List<String> result = _data.addTitles(titles);
+		updateData(true);
 		return result;
 	}
 	
@@ -92,43 +79,24 @@ public class KWICController {
 	 * @param title
 	 * @return
 	 */
-	private boolean addTitle(String title, boolean updateResult) {
-		if (title == null) return false;
-		if (title.trim().isEmpty()) return false;
-		
-		if (!_titlesGiven.contains(title)) {
-			_titlesGiven.add(title);
-			if (updateResult) {
-				updateResultsListForNewTitle(title);
-			}
-		}
-		return true;
-	}
-	
 	public boolean addTitle(String title) {
-		return addTitle(title, true);
-	}
-	
-	//--------------------------------------------------
-	
-	/**
-	 * Tries to remove the given title,
-	 * if the title is found and removed,
-	 * the results are updated and returns true.
-	 * 
-	 * Returns false if there was an issue
-	 * @param title
-	 * @return
-	 */
-	public boolean removeTitle(String title) {
 		if (title == null) return false;
-		if (title.isEmpty()) return false;
-		
-		if(_titlesGiven.remove(title)) {
-			updateResultsListForRemovedTitle(title);
+		if (title.trim().isEmpty()) return false;	
+		if(_data.addTitle(title)) {
+				updateData(true);
 		}
-		
 		return true;
+	}
+
+	private void updateData(boolean isMerge) {
+		KWICCapitalizer.capitalizeList();
+		KWICRotator.rotateList();
+		KWICFilterIgnoreWords.filterList();
+		KWICAlphabetizer.alphabetize();
+		if(isMerge)
+		KWICMerger.mergeTitlesToExistingList();
+		else
+			_data.setResultSetToIntermediateResult();
 	}
 	
 	//--------------------------------------------------
@@ -143,14 +111,7 @@ public class KWICController {
 	public List<String> addWordsToIgnore(List<String> words) {
 		if (words ==  null) return null;
 		
-		List<String> result = new ArrayList<String>();
-		
-		for(String word : words) {
-			if(!addWordToIgnoreList(word, false)) {
-				result.add(word);
-			}
-		}
-		
+		List<String> result = _data.addWordsToIgnore(words);		
 		updateResultsListForAddedIgnoreWord();
 		return result;
 	}
@@ -162,62 +123,16 @@ public class KWICController {
 	 * @param words
 	 * @return
 	 */
-	private boolean addWordToIgnoreList(String word, boolean updateResult) {
+	public boolean addWordToIgnore(String word) {
 		if (word == null) return false;
 		if (word.trim().isEmpty()) return false;
 		
-		if (!_wordsToIgnore.contains(word.toLowerCase())) {
-			_wordsToIgnore.add(word.toLowerCase());
-			if (updateResult) {
+		if(_data.addWordToIgnore(word)) {			
 				updateResultsListForAddedIgnoreWord();
-			}
 		}
 		return true;
 	}
 	
-	public boolean addWordToIgnore(String title) {
-		return addWordToIgnoreList(title, true);
-	}
-	
-	//--------------------------------------------------
-
-	public boolean removeIgnoreWord(String word) {
-		if (word == null) return false;
-		if (word.trim().isEmpty()) return false;
-		
-		_wordsToIgnore.remove(word);		
-		return true;
-	}
-	
-	//--------------------------------------------------
-
-	public List<String> getIgnoreWordsList() {
-		return _wordsToIgnore;
-	}
-	
-	/**
-	 * Returns the current list of
-	 * string for output
-	 * @return
-	 */
-	public List<String> getCurrentResult() {
-		return _resultList;
-	}
-	
-	/**
-	 * Returns all the titles given by user
-	 */
-	public List<String> getGivenTitles() {
-		return _titlesGiven;
-	}
-	
-	//--------------------------------------------------
-	
-	public void reset() {
-		_resultList.clear();
-		_titlesGiven.clear();
-		_wordsToIgnore.clear();
-	}
 	
 	///////////////////////////////////////////////////////////
 	///////////// Routines using the components ///////////////
@@ -232,49 +147,8 @@ public class KWICController {
 	 * 		been added to the field _wordsToIgnore
 	 */
 	private void updateResultsListForAddedIgnoreWord() {
-		if (_resultList.isEmpty()) return;
-		
-		_resultList = KWICFilterIgnoreWords.filterList(_resultList, _wordsToIgnore);
-		_resultList = KWICCapitalizer.capitalizeList(_resultList, _wordsToIgnore);
+		if (_data.getCurrentResult().isEmpty()) return;		
+		updateData(false);
 	}
 	
-	/**
-	 * This method is run when a new title is provided
-	 */
-	private void updateResultsListForNewTitles(List<String> newTitles) {
-		assert newTitles != null : "Unexpected null list given as titles";
-		if (newTitles.isEmpty()) return;
-		
-		List<String> intermediateResult = KWICCapitalizer.capitalizeList(newTitles, _wordsToIgnore);
-		intermediateResult = KWICRotator.rotateList(intermediateResult);
-		intermediateResult = KWICFilterIgnoreWords.filterList(intermediateResult, _wordsToIgnore);
-		intermediateResult = KWICAlphabetizer.alphabetize(intermediateResult);
-		
-		_resultList = KWICMerger.mergeTitlesToExistingList(intermediateResult, _resultList);
-	}
-
-	private void updateResultsListForNewTitle(String title) {
-		assert title != null : "Unexpected null given as title";
-		if (title.isEmpty()) return;
-		
-		List<String> newTitles = new ArrayList<String>();
-		newTitles.add(title);
-		updateResultsListForNewTitles(newTitles);
-	}
-	
-	/**
-	 * This method is run when a title is removed
-	 */
-	private void updateResultsListForRemovedTitle(String removedTitle) {
-		assert removedTitle != null : "Unexpected null given as removed title";
-		if (removedTitle.isEmpty()) return;
-		
-		String capitalizedString= KWICCapitalizer.capitalize(removedTitle, _wordsToIgnore);
-		List<String> intermediateResult = KWICRotator.rotate(capitalizedString);
-		List<String> stringsToIgnore = new ArrayList<String>();
-		stringsToIgnore.addAll(_wordsToIgnore);
-		stringsToIgnore.addAll(intermediateResult);
-		
-		_resultList = KWICFilterIgnoreWords.filterList(_resultList, _wordsToIgnore);
-	}
 }

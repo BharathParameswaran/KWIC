@@ -3,6 +3,8 @@ package logic;
 import java.util.Collections;
 import java.util.List;
 
+import dataSource.Data;
+
 /**
  * 
  * @author Bharath
@@ -10,6 +12,8 @@ import java.util.List;
  */
 
 public class KWICAlphabetizer {
+	
+	private static Data _data = Data.inst();
 
 	/**
 	 * Accepts a list of String and arranges them in alphabetic order
@@ -17,7 +21,8 @@ public class KWICAlphabetizer {
 	 * @param listToAlphabetize
 	 * @return
 	 */
-	public static List<String> alphabetize(List<String> listToSort){
+	public static List<String> alphabetize(){
+		List<String> listToSort = _data.getIntermediateList();
 		assert listToSort != null : "Unexpected null list to be sorted";
 		assert !listToSort.isEmpty() : "Unexpected empty list to be sorted";
 

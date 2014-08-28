@@ -34,7 +34,7 @@ public class KWICCapitalizerTest {
 
 	private void testMethodForNullString() {
 		try {
-			KWICCapitalizer.capitalize(null, null);
+			KWICCapitalizer.capitalize(null);
 			assertFalse("Expected AssertionError", true);
 		} catch (AssertionError ae) {
 			assertEquals("Unexpected null string to be capitalized",

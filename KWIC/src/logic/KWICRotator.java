@@ -3,6 +3,8 @@ package logic;
 import java.util.ArrayList;
 import java.util.List;
 
+import dataSource.Data;
+
 /**
  * This class rotates the words in a given string
  * and generates a list of string
@@ -12,15 +14,18 @@ import java.util.List;
 public class KWICRotator {
 	
 	private static final String DELIMITER = " ";
+	private static Data _data = Data.inst();
 	
-	public static List<String> rotateList(List<String> inputList) {
+	public static List<String> rotateList() {
+		List<String> inputList = _data.getIntermediateList();
 		List<String> outputList = new ArrayList<String>();
 		
 		for (String input : inputList) {
 			outputList.addAll(rotate(input));
-		}
+		}		
+		_data.set_intermediateList(outputList);
 		
-		return outputList;
+		return outputList; // for testing purposes only
 	}
 
 	/**
