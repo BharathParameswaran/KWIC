@@ -32,7 +32,7 @@ public class KWICFilterIgnoreWords {
 			}
 		}
 		
-		_data.set_intermediateList(outputList);
+		_data.setIntermediateList(outputList);
 		return outputList;
 	}
 

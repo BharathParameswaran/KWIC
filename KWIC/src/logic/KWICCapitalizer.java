@@ -51,7 +51,7 @@ public class KWICCapitalizer {
 			outputList.add(capitalize(title));
 		}
 
-		_data.set_intermediateList(outputList);
+		_data.setIntermediateList(outputList);
 
 		return outputList; // only for testing purposes
 	}

@@ -111,12 +111,12 @@ public class Data {
 		_wordsToIgnore.clear();
 	}
 
-	public void set_resultList(List<String> _resultList) {
-		this._resultList = _resultList;
+	public void setResultList(List<String> resultList) {
+		this._resultList = resultList;
 	}
 
-	public void set_intermediateList(List<String> _intermediateList) {
-		this._intermediateList = _intermediateList;
+	public void setIntermediateList(List<String> intermediateList) {
+		this._intermediateList = intermediateList;
 	}
 	
 	public void setResultSetToIntermediateResult() {

@@ -23,7 +23,7 @@ public class KWICRotator {
 		for (String input : inputList) {
 			outputList.addAll(rotate(input));
 		}		
-		_data.set_intermediateList(outputList);
+		_data.setIntermediateList(outputList);
 		
 		return outputList; // for testing purposes only
 	}
