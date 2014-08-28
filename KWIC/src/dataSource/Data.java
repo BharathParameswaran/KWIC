@@ -39,8 +39,6 @@ public class Data {
 		for (String title : titles) {
 			if (!addTitle(title)) {
 				result.add(title);
-			} else {
-				addTitle(title);
 			}
 		}
 
@@ -51,7 +49,6 @@ public class Data {
 	public boolean addWordToIgnore(String word) {
 		if (!_wordsToIgnore.contains(word.toLowerCase())) {
 			_wordsToIgnore.add(word.toLowerCase());
-			_intermediateList.addAll(_titlesGiven);
 			return true;
 		}
 		return false;
@@ -109,6 +106,7 @@ public class Data {
 
 	public void reset() {
 		_resultList.clear();
+		_intermediateList.clear();
 		_titlesGiven.clear();
 		_wordsToIgnore.clear();
 	}
@@ -125,6 +123,11 @@ public class Data {
 		_resultList.clear();
 		_resultList.addAll(_intermediateList);
 		_intermediateList.clear();
+	}
+	
+	public void copyAllTitlesToIntermediateResult() {
+		_intermediateList.clear();
+		_intermediateList.addAll(_titlesGiven);
 	}
 
 }

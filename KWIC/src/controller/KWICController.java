@@ -111,7 +111,8 @@ public class KWICController {
 	public List<String> addWordsToIgnore(List<String> words) {
 		if (words ==  null) return null;
 		
-		List<String> result = _data.addWordsToIgnore(words);		
+		List<String> result = _data.addWordsToIgnore(words);
+		_data.copyAllTitlesToIntermediateResult();
 		updateResultsListForAddedIgnoreWord();
 		return result;
 	}
