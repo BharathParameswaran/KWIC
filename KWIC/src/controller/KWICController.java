@@ -22,13 +22,7 @@ public class KWICController {
 	Data _data;
 
 	public KWICController() {
-
 		_data = Data.inst();
-	}
-
-	public KWICController(String titlesFileName, String wordsToIgnoreFileName) {
-		this();
-		loadInformationFromFiles(titlesFileName, wordsToIgnoreFileName);
 	}
 
 	public List<String> loadInformationFromFiles(String titlesFileName,
@@ -84,14 +78,11 @@ public class KWICController {
 	 * @return
 	 */
 	public boolean addTitle(String title) {
-		if (title == null)
-			return false;
-		if (title.trim().isEmpty())
-			return false;
 		if (_data.addTitle(title)) {
 			updateData(true);
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	private void updateData(boolean isMerge) {
@@ -132,16 +123,32 @@ public class KWICController {
 	 * @return
 	 */
 	public boolean addWordToIgnore(String word) {
-		if (word == null)
-			return false;
-		if (word.trim().isEmpty())
-			return false;
-
 		if (_data.addWordToIgnore(word)) {
 			_data.finalizeInteermediateResult();
 			updateResultsListForAddedIgnoreWord();
+			return true;
 		}
-		return true;
+		return false;
+	}
+	
+	// /////////////////////////////////////////////////////////
+	// //////////////// Getters APIs for UI ////////////////////
+	// /////////////////////////////////////////////////////////
+	
+	public List<String> getGivenTitles() {
+		return _data.getGivenTitles();
+	}
+	
+	public List<String> getIgnoreWordsList() {
+		return _data.getIgnoreWordsList();
+	}
+	
+	public List<String> getCurrentResult() {
+		return _data.getCurrentResult();
+	}
+	
+	public void reset() {
+		_data.reset();
 	}
 
 	// /////////////////////////////////////////////////////////
