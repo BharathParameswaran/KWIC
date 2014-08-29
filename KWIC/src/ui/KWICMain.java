@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Scanner;
 
 import controller.KWICController;
-import dataSource.Data;
 
 class KWICMain {
 
@@ -27,8 +26,7 @@ class KWICMain {
 	private static final int INVALID_OPTION = -1;
 	private static KWICController _controller = new KWICController();
 	private static Scanner sc = new Scanner(System.in);
-	private static Data _data = Data.inst();
-
+	
 	private static String[] options = { "1. Add a new title",
 			"2. Add a new word to ignore",
 			"3. Add titles and ignored words from a text file",
@@ -82,11 +80,11 @@ class KWICMain {
 			printResultList();
 			break;
 		case 4:
-			printList(_data.getGivenTitles(), TITLES_LIST);
-			printList(_data.getIgnoreWordsList(), WORDS_TO_IGNORE_LIST);
+			printList(_controller.getGivenTitles(), TITLES_LIST);
+			printList(_controller.getIgnoreWordsList(), WORDS_TO_IGNORE_LIST);
 			break;
 		case 5:
-			printList(_data.getCurrentResult(), RESULT_SET);
+			printList(_controller.getCurrentResult(), RESULT_SET);
 			break;
 		case 6:
 			resetLists();
@@ -99,7 +97,7 @@ class KWICMain {
 	}
 
 	private static void resetLists() {
-		_data.reset();
+		_controller.reset();
 		System.out.println(RESET_SUCCESSFUL);
 	}
 
@@ -113,9 +111,9 @@ class KWICMain {
 	}
 
 	private static void printResultList() {
-		List<String> resultSet = _data.getCurrentResult();
+		List<String> resultSet = _controller.getCurrentResult();
 		if (!resultSet.isEmpty())
-			printList(_data.getCurrentResult(), RESULT_SET);
+			printList(_controller.getCurrentResult(), RESULT_SET);
 	}
 
 	private static void getNewTitle() {

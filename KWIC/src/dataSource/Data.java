@@ -3,6 +3,12 @@ package dataSource;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 
+ * @author Bharath
+ *
+ */
+
 public class Data {
 	private List<String> _titlesGiven;
 	private List<String> _wordsToIgnore;
@@ -130,17 +136,17 @@ public class Data {
 		_intermediateList.clear();
 	}
 	
+	public void finalizeInteermediateResult(){
+		if(_hasNewWordToIgnore)
+			copyAllTitlesToIntermediateResult();
+	}
+	
 	private void copyAllTitlesToIntermediateResult() {
 		for (String s : _titlesGiven) {
 			if (!_intermediateList.contains(s)) {
 				_intermediateList.add(s);
 			}
 		}
-	}
-	
-	public void finalizeInteermediateResult(){
-		if(_hasNewWordToIgnore)
-			copyAllTitlesToIntermediateResult();
 	}
 
 }

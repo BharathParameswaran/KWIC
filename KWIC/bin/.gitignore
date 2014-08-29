@@ -1,5 +1,5 @@
 /controller
+/dataSource
+/inputReader
 /logic
 /ui
-/inputReader
-/dataSource
