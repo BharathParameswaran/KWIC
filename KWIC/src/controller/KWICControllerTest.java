@@ -17,6 +17,8 @@ import controller.KWICController;
 
 import org.junit.Test;
 
+import dataSource.Data;
+
 /**
  * @author thyagesh93
  *
@@ -27,33 +29,31 @@ public class KWICControllerTest {
 
 	@Test
 	public void testLoadInformationFromFiles() {
-		// tested in testControllerString() test method
-	}
-	
-	@Test
-	public void testControllerString() {
 		setupFilesWithValidTitles();
 		
-		testControllerStringEmptyInput();
-		testControllerStringInvalidFilesInput();
-		testControllerStringTypicalInput();
+		testLoadInformationFromFilesEmptyInput();
+		testLoadInformationFromFilesInvalidFilesInput();
+		testLoadInformationFromFilesTypicalInput();
 		
 		clearFilesCreatedForTesting();
 	}
 
-	private void testControllerStringEmptyInput() {
+	private void testLoadInformationFromFilesEmptyInput() {
 		// both empty
-		KWICController c = new KWICController("", "");
+		Data data = Data.inst();
+		data.reset();
+		KWICController c = new KWICController();
+		
 		List<String> expectedTitlesList = new ArrayList<String>();
 		List<String> expectedIgnoreList = new ArrayList<String>();
 		List<String> expectedResultList = new ArrayList<String>();
 		
-		assertEquals(expectedTitlesList, c.getGivenTitles());
-		assertEquals(expectedIgnoreList, c.getIgnoreWordsList());
-		assertEquals(expectedResultList, c.getCurrentResult());
+		assertEquals(expectedTitlesList, data.getGivenTitles());
+		assertEquals(expectedIgnoreList, data.getIgnoreWordsList());
+		assertEquals(expectedResultList, data.getCurrentResult());
 		
 		// titles empty
-		KWICController c1 = new KWICController("tmp/validInput.txt", "");
+		c.loadInformationFromFiles("tmp/validInput.txt", "");
 		expectedTitlesList.add("Line 1");
 		expectedTitlesList.add("Line 2");
 		
@@ -62,45 +62,57 @@ public class KWICControllerTest {
 		expectedResultList.add("Line 1");
 		expectedResultList.add("Line 2");
 		
-		assertEquals(expectedTitlesList, c1.getGivenTitles());
-		assertEquals(expectedIgnoreList, c1.getIgnoreWordsList());
-		assertEquals(expectedResultList, c1.getCurrentResult());
+		assertEquals(expectedTitlesList, data.getGivenTitles());
+		assertEquals(expectedIgnoreList, data.getIgnoreWordsList());
+		assertEquals(expectedResultList, data.getCurrentResult());
 		
 		expectedTitlesList.clear();
 		expectedResultList.clear();
+		data.reset();
 		
 		// ignore words empty
-		KWICController c2 = new KWICController("", "tmp/validInput.txt");
+		c.loadInformationFromFiles("", "tmp/validInput.txt");
 		expectedIgnoreList.add("line 1");
 		expectedIgnoreList.add("line 2");
 		
-		assertEquals(expectedTitlesList, c2.getGivenTitles());
-		assertEquals(expectedIgnoreList, c2.getIgnoreWordsList());
-		assertEquals(expectedResultList, c2.getCurrentResult());
+		assertEquals(expectedTitlesList, data.getGivenTitles());
+		assertEquals(expectedIgnoreList, data.getIgnoreWordsList());
+		assertEquals(expectedResultList, data.getCurrentResult());
+		data.reset();
 	}
 
-	private void testControllerStringInvalidFilesInput() {
+	private void testLoadInformationFromFilesInvalidFilesInput() {
 		// both invalid
-		KWICController c = new KWICController("invalid", "invalid");
+		Data data = Data.inst();
+		data.reset();
+		
+		KWICController c = new KWICController();
+		c.loadInformationFromFiles("invalid", "invalid");
+		
 		List<String> expectedTitlesList = new ArrayList<String>();
 		List<String> expectedIgnoreList = new ArrayList<String>();
 		List<String> expectedResultList = new ArrayList<String>();
 		
-		assertEquals(expectedTitlesList, c.getGivenTitles());
-		assertEquals(expectedIgnoreList, c.getIgnoreWordsList());
-		assertEquals(expectedResultList, c.getCurrentResult());
+		assertEquals(expectedTitlesList, data.getGivenTitles());
+		assertEquals(expectedIgnoreList, data.getIgnoreWordsList());
+		assertEquals(expectedResultList, data.getCurrentResult());
 		
 		// one invalid
-		KWICController c1 = new KWICController("invalid", "");
+		c.loadInformationFromFiles("invalid", "");
 		
-		assertEquals(expectedTitlesList, c1.getGivenTitles());
-		assertEquals(expectedIgnoreList, c1.getIgnoreWordsList());
-		assertEquals(expectedResultList, c1.getCurrentResult());
+		assertEquals(expectedTitlesList, data.getGivenTitles());
+		assertEquals(expectedIgnoreList, data.getIgnoreWordsList());
+		assertEquals(expectedResultList, data.getCurrentResult());
 	}
 
 
-	private void testControllerStringTypicalInput() {
-		KWICController c = new KWICController("tmp/validInput.txt", "tmp/validInput.txt");
+	private void testLoadInformationFromFilesTypicalInput() {
+		Data data = Data.inst();
+		data.reset();
+		
+		KWICController c = new KWICController();
+		c.loadInformationFromFiles("tmp/validInput.txt", "tmp/validInput.txt");
+		
 		List<String> expectedTitlesList = new ArrayList<String>();
 		List<String> expectedIgnoreList = new ArrayList<String>();
 		List<String> expectedResultList = new ArrayList<String>();
@@ -116,9 +128,9 @@ public class KWICControllerTest {
 		expectedResultList.add("Line 1");
 		expectedResultList.add("Line 2");
 		
-		assertEquals(expectedTitlesList, c.getGivenTitles());
-		assertEquals(expectedIgnoreList, c.getIgnoreWordsList());
-		assertEquals(expectedResultList, c.getCurrentResult());
+		assertEquals(expectedTitlesList, data.getGivenTitles());
+		assertEquals(expectedIgnoreList, data.getIgnoreWordsList());
+		assertEquals(expectedResultList, data.getCurrentResult());
 	}
 
 	private void setupFilesWithValidTitles() {
@@ -140,7 +152,6 @@ public class KWICControllerTest {
 			bw.write("Line 2\n");
 			bw.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -176,11 +187,6 @@ public class KWICControllerTest {
 		}
 		f.delete();
 	}
-
-	@Test
-	public void testRemoveTitle() {
-		// TODO: add this when the function is released
-	}
 	
 	@Test
 	public void testGetCurrentResult() {
@@ -192,28 +198,14 @@ public class KWICControllerTest {
 	 */
 	@Test
 	public void testGetIgnoreWordsList() {
-		testGetIgnoreListWithDefaultConstructor();
-		testGetIgnoreListWithCustomConstructor();
-	}
-
-	private void testGetIgnoreListWithDefaultConstructor() {
-		KWICController controller = new KWICController();
+		Data data = Data.inst();
+		data.reset();
 		
-		assertEquals(0, controller.getIgnoreWordsList().size());		
-	}
-
-	private void testGetIgnoreListWithCustomConstructor() {
-		KWICController controller = new KWICController();
-		List<String> wordsToIgnore = new ArrayList<String>();
+		KWICController c = new KWICController();
+		data.addWordToIgnore("test");
+		data.addWordToIgnore("test2");
 		
-		wordsToIgnore.add("of");
-		wordsToIgnore.add("a");
-		wordsToIgnore.add("the");
-		wordsToIgnore.add("to");
-		controller.addWordsToIgnore(wordsToIgnore);
-		
-		List<String> actualList = controller.getIgnoreWordsList();
-		assertEquals(wordsToIgnore, actualList);
+		assertEquals(data.getIgnoreWordsList(), c.getIgnoreWordsList());
 	}
 
 	/**
@@ -228,18 +220,23 @@ public class KWICControllerTest {
 	}
 
 	private void testAddWordsToIgnoreNullInput() {
+		Data.inst().reset();
 		KWICController controller = new KWICController();
 		assertNull(controller.addWordsToIgnore(null));
+		assertEquals(new ArrayList<String>(), Data.inst().getIgnoreWordsList());
 	}
 	
 	private void testAddWordsToIgnoreEmptyInput() {
+		Data.inst().reset();
 		KWICController controller = new KWICController();
 		// should run without any errors
 		List<String> result = controller.addWordsToIgnore(new ArrayList<String>());
 		assertEquals(0, result.size());
+		assertEquals(new ArrayList<String>(), Data.inst().getIgnoreWordsList());
 	}
 
 	private void testAddWordsToIgnoreRepeatedInput() {
+		Data.inst().reset();
 		KWICController controller = new KWICController();
 		List<String> wordsToAdd = new ArrayList<String>();
 		wordsToAdd.add("of");
@@ -248,11 +245,14 @@ public class KWICControllerTest {
 		
 		assertEquals(new ArrayList<String>(), controller.addWordsToIgnore(wordsToAdd));
 		
-		assertEquals(1, controller.getIgnoreWordsList().size());
-		assertEquals("of", controller.getIgnoreWordsList().get(0));
+		List<String> expectedOutputList = new ArrayList<String>();
+		expectedOutputList.add("of");
+		
+		assertEquals(expectedOutputList, controller.getIgnoreWordsList());
 	}
 
 	private void testAddWordsToIgnoreTypicalInput() {
+		Data.inst().reset();
 		KWICController controller = new KWICController();
 		List<String> wordsToAdd = new ArrayList<String>();
 		List<String> wordsWithError = new ArrayList<String>();
@@ -261,12 +261,14 @@ public class KWICControllerTest {
 		wordsToAdd.add("a");
 		wordsToAdd.add("the");
 		wordsToAdd.add(" ");
+		wordsToAdd.add(null);
 		wordsWithError.add(" ");
+		wordsWithError.add(null);
 		assertEquals(wordsWithError, controller.addWordsToIgnore(wordsToAdd));
 		wordsToAdd.remove(" ");
+		wordsToAdd.remove(null);
 		
-		List<String> actualList = controller.getIgnoreWordsList();
-		assertEquals(wordsToAdd, actualList);
+		assertEquals(wordsToAdd, controller.getIgnoreWordsList());
 	}
 	
 	/**
@@ -281,13 +283,15 @@ public class KWICControllerTest {
 	}
 
 	private void testAddWordToIgnoreNullInput() {
+		Data.inst().reset();
 		KWICController controller = new KWICController();
 		
 		assertFalse(controller.addWordToIgnore(null));
-		assertEquals(new ArrayList<String>(), controller.getIgnoreWordsList());		
+		assertEquals(new ArrayList<String>(), controller.getIgnoreWordsList());
 	}
 
 	private void testAddWordToIgnoreEmptyInput() {
+		Data.inst().reset();
 		KWICController controller = new KWICController();
 		
 		assertFalse(controller.addWordToIgnore(""));
@@ -299,6 +303,7 @@ public class KWICControllerTest {
 	}
 
 	private void testAddWordToIgnoreTypicalInputWithoutTypicalTitles() {
+		Data.inst().reset();
 		KWICController controller = new KWICController();
 		List<String> expectedOutput = new ArrayList<String>();
 		
@@ -312,6 +317,7 @@ public class KWICControllerTest {
 	}
 	
 	private void testAddWordToIgnoreTypicalInputWithTypicalTitles() {
+		Data.inst().reset();
 		KWICController c = new KWICController();
 		c.addTitles(generateTypicalTitles());
 		
@@ -319,8 +325,7 @@ public class KWICControllerTest {
 		c.addWordsToIgnore(ignoreWords);
 		
 		List<String> expectedList = generateResultsListForTypicalInputWithTypicalIgnoreWords();
-		assertEquals(expectedList, c.getCurrentResult());
-		
+		assertEquals(expectedList, c.getCurrentResult());		
 	}
 	
 	/**
@@ -328,17 +333,13 @@ public class KWICControllerTest {
 	 */
 	@Test
 	public void testGetGivenTitles() {
-		testGetGivenTitlesDefaultValue();
-		testGetGivenTitlesTypicalSuccess();
-	}
-	
-	private void testGetGivenTitlesDefaultValue() {
+		Data data = Data.inst();
 		KWICController c = new KWICController();
-		assertEquals(new ArrayList<String>(), c.getGivenTitles());
-	}
-	
-	private void testGetGivenTitlesTypicalSuccess() {
-		// tested everywhere else		
+		data.reset();
+		data.addTitle("test");
+		data.addTitle("test2");
+		
+		assertEquals(data.getGivenTitles(), c.getGivenTitles());
 	}
 	
 	/**
@@ -353,13 +354,18 @@ public class KWICControllerTest {
 	}
 
 	private void testAddTitlesForNullInput() {
+		Data.inst().reset();
 		KWICController c = new KWICController();
 		assertNull(c.addTitles(null));
+		assertEquals(new ArrayList<String>(), Data.inst().getGivenTitles());
 	}
 
 	private void testAddTitlesForEmptyInput() {
+		Data.inst().reset();
 		KWICController c = new KWICController();
+		
 		assertEquals(new ArrayList<String>(), c.addTitles(new ArrayList<String>()));
+		assertEquals(new ArrayList<String>(), Data.inst().getGivenTitles());
 	}
 
 	private void testAddTitlesForTypicalInputWithoutIgnoreWords() {
@@ -494,6 +500,7 @@ public class KWICControllerTest {
 
 	
 	private void testAddTitleTypicalInput() {
+		Data.inst().reset();
 		KWICController c = new KWICController();
 		List<String> expectedTitleList = new ArrayList<String>();
 		List<String> expectedResultList = new ArrayList<String>();
@@ -516,5 +523,16 @@ public class KWICControllerTest {
 		assertTrue(c.addTitle("Word"));
 		assertEquals(expectedTitleList, c.getGivenTitles());		
 		assertEquals(expectedResultList, c.getCurrentResult());
+	}
+	
+	@Test
+	public void testReset() {
+		Data data = Data.inst();
+		KWICController c = new KWICController();
+		data.addTitle("a");
+		c.reset();
+		
+		assertEquals(new ArrayList<String>(), data.getGivenTitles());
+		
 	}
 }

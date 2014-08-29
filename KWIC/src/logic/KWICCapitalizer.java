@@ -16,7 +16,7 @@ public class KWICCapitalizer {
 
 	/**
 	 * Accepts an input string and capitalizes the first letter of keywords and
-	 * converts the other words to lower case
+	 * converts the other words to lower case.
 	 * 
 	 * @param input
 	 * @param wordsToIgnore
@@ -25,7 +25,9 @@ public class KWICCapitalizer {
 	private static String capitalize(String input) {
 
 		assert input != null : "Unexpected null string to be capitalized";
-		assert input.trim().length() != 0 : "Unexpected empty string to be capitalized";
+		if (input.trim().isEmpty()) {
+			return input;
+		}
 
 		String[] words = input.split(" ");
 		String output = "";
@@ -41,10 +43,19 @@ public class KWICCapitalizer {
 		return output;
 	}
 
+	/**
+	 * Capitalizes the current intermediate result in Data
+	 * returns a list of string that could not be capitalized
+	 * or null if no string was there to be capitalized
+	 * @return
+	 */
 	public static List<String> capitalizeList() {
 		List<String> titlesList = _data.getIntermediateList();
 		assert titlesList != null : "Unexpected null list to be capitalized";
-		assert !titlesList.isEmpty() : "Unexpected empty list to be capitalized";
+		if (titlesList.isEmpty()) {
+			return null;
+		}
+		
 		List<String> outputList = new ArrayList<String>();
 		for (String title : titlesList) {
 			outputList.add(capitalize(title));

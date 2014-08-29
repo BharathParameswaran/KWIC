@@ -26,12 +26,14 @@ public class Data {
 	}
 
 	public boolean addTitle(String title) {
+		if (title == null) return false;
+		if (title.trim().isEmpty()) return false;
+		
 		if (!_titlesGiven.contains(title)) {
 			_titlesGiven.add(title);
 			_intermediateList.add(title);
-			return true;
 		}
-		return false;
+		return true;
 	}
 
 	public List<String> addTitles(List<String> titles) {
@@ -49,14 +51,14 @@ public class Data {
 	}
 
 	public boolean addWordToIgnore(String word) {
+		if (word == null) return false;
+		if (word.trim().isEmpty()) return false;
 		
 		if (!_wordsToIgnore.contains(word.toLowerCase())) {
 			_wordsToIgnore.add(word.toLowerCase());
 			_hasNewWordToIgnore = true;
-			
-			return true;
 		}
-		return false;
+		return true;
 	}
 
 	public List<String> addWordsToIgnore(List<String> words) {

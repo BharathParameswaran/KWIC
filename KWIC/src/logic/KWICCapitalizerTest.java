@@ -1,8 +1,8 @@
 package logic;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,13 +47,7 @@ public class KWICCapitalizerTest {
 
 	private void testMethodForEmptyList() {
 		Data.inst().reset();
-		try {
-			KWICCapitalizer.capitalizeList();
-			assertFalse("Expected AssertionError", true);
-		} catch (AssertionError ae) {
-			assertEquals("Unexpected empty list to be capitalized",
-					ae.getMessage());
-		}
+		assertNull(KWICCapitalizer.capitalizeList());
 	}
 
 	private void testMethodForListWithOneString() {
