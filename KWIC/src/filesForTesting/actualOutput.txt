@@ -1,0 +1,85 @@
+1. Add a new title
+2. Add a new word to ignore
+3. Add titles and ignored words from a text file
+4. View existing list of tiles and words to ignore
+5. View current result set
+6. Reset lists
+7. Exit
+
+Enter your option: Please enter a valid integer between 1 and 7
+Enter your option: Please enter a valid integer between 1 and 7
+Enter your option: Please enter a valid integer between 1 and 7
+Enter your option: Enter new title: 
+-------Result Set-------
+1. 2 Fast And Furious
+2. And Furious 2 Fast
+3. Fast And Furious 2
+4. Furious 2 Fast And
+
+Enter your option: Enter new word to ignore: 
+-------Result Set-------
+1. 2 Fast and Furious
+2. Fast and Furious 2
+3. Furious 2 Fast and
+
+Enter your option: Enter new word to ignore: 
+-------Result Set-------
+1. 2 Fast and Furious
+2. Fast and Furious 2
+3. Furious 2 Fast and
+
+Enter your option: Enter new title: 
+-------Result Set-------
+1. 2 Fast and Furious
+2. Fast and Furious 2
+3. Fast too Furious too
+4. Furious 2 Fast and
+5. Furious too Fast too
+
+Enter your option: 
+-------Result Set-------
+1. 2 Fast and Furious
+2. Fast and Furious 2
+3. Fast too Furious too
+4. Furious 2 Fast and
+5. Furious too Fast too
+
+Enter your option: 
+-------List of titles-------
+1. fast and furious  2
+2. too fast too furious
+
+
+-------List of words to ignore-------
+1. and
+2. too
+
+Enter your option: All lists reset successfully!
+Enter your option: Enter filename for reading words to ignore: File path specified is invalid
+Re-enter file name: Enter filename for reading titles: File path specified is invalid
+Re-enter file name: 
+-------Result Set-------
+1. 2 Rush Hour
+2. After Tomorrow the Day
+3. China the Great Wall of
+4. Day After Tomorrow the
+5. Great Wall of China the
+6. Hour 2 Rush
+7. Rush Hour 2
+8. Tomorrow the Day After
+9. Wall of China the Great
+
+Enter your option: 
+-------List of titles-------
+1. the day after tomorrow
+2. the great wall of china
+3. rush hour 2
+
+
+-------List of words to ignore-------
+1. the
+2. of
+3. an
+
+Enter your option: All lists reset successfully!
+Enter your option: 

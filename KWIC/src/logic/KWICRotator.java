@@ -18,6 +18,10 @@ public class KWICRotator {
 	
 	public static List<String> rotateList() {
 		List<String> inputList = _data.getIntermediateList();
+		assert inputList != null : "Unexpected null list to be capitalized";
+		if (inputList.isEmpty()) {
+			return null;
+		}
 		List<String> outputList = new ArrayList<String>();
 		
 		for (String input : inputList) {
@@ -36,7 +40,7 @@ public class KWICRotator {
 	 * @param input
 	 * @return List<String>
 	 */
-	public static List<String> rotate(String input) {
+	private static List<String> rotate(String input) {
 		assert input != null : "Unexpected null input to be rotated";
 		assert !input.isEmpty() : "Unexpected empty string to be rotated";
 		

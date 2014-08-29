@@ -7,62 +7,47 @@ import java.util.List;
 
 import org.junit.Test;
 
+import dataSource.Data;
 import logic.KWICRotator;
 
 public class KWICRotatorTest {
 
+	Data _data = Data.inst();
+
 	@Test
 	public void testRotate() {
-		testMethodForNullInput();
-		testMethodForEmptyInput();
+		testMethodForEmptyList();
 		testMethodForOneWordInput();
 		testMethodForTypicalInput();
 	}
 
-	private void testMethodForNullInput() {
-
-		try {
-			KWICRotator.rotate(null);
-			assertFalse("Expected AssertionError", true);
-		} catch (AssertionError ae) {
-			assertEquals("Unexpected null input to be rotated", ae.getMessage());
-		}
-	}
-
-	private void testMethodForEmptyInput() {
-
-		try {
-			KWICRotator.rotate("");
-			assertFalse("Expected AssertionError", true);
-		} catch (AssertionError ae) {
-			assertEquals("Unexpected empty string to be rotated",
-					ae.getMessage());
-		}
+	private void testMethodForEmptyList() {
+		_data.reset();
+		assertNull("Unexpected empty string to be rotated",
+				KWICRotator.rotateList());
 
 	}
 
 	private void testMethodForOneWordInput() {
 
-		String input = "One";
-		String expectedOutput = "One";
-
-		List<String> actual = KWICRotator.rotate(input);
-		assertEquals(1, actual.size());
-		assertEquals(expectedOutput, actual.get(0));
+		_data.reset();
+		_data.getIntermediateList().add("One");
+		List<String> outputList = new ArrayList<String>();
+		outputList.add("One");
+		assertEquals(outputList, KWICRotator.rotateList());
 
 	}
 
 	private void testMethodForTypicalInput() {
-
+		_data.reset();
 		String input = "The day After tomorrow";
+		_data.getIntermediateList().add(input);
+
 		List<String> expectedOutput = new ArrayList<String>();
 		expectedOutput.add("The day After tomorrow");
 		expectedOutput.add("day After tomorrow The");
 		expectedOutput.add("After tomorrow The day");
 		expectedOutput.add("tomorrow The day After");
-
-		List<String> actual = KWICRotator.rotate(input);
-		assertEquals(4, actual.size());
-		assertEquals(expectedOutput, actual);
+		assertEquals(expectedOutput, KWICRotator.rotateList());
 	}
 }

@@ -1,7 +1,7 @@
 package logic;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,8 @@ import dataSource.Data;
  * 
  */
 public class KWICAlphabetizerTest {
-
+	Data _data = Data.inst();
+	
 	@Test
 	public void testAlphabetize() {
 		testMethodForEmptyArray();
@@ -25,19 +26,16 @@ public class KWICAlphabetizerTest {
 	}
 
 	private void testMethodForEmptyArray() {
+		_data.reset();
 
-		try {
-			KWICAlphabetizer.alphabetize();
-			assertFalse("Expected AssertionError", true);
-		} catch (AssertionError ae) {
-			assertEquals("Unexpected empty list to be sorted", ae.getMessage());
-		}
+		assertNull(KWICAlphabetizer.alphabetize());
 
 	}
 
 	private void testMethodForOrderedList() {
-		Data _data = Data.inst();
-
+		
+		_data.reset();
+		
 		List<String> listToSort = _data.getIntermediateList();
 		listToSort.add("Fast and Furious");
 		listToSort.add("the Day after Tomorrow");

@@ -25,10 +25,12 @@ public class KWICCapitalizer {
 	private static String capitalize(String input) {
 
 		assert input != null : "Unexpected null string to be capitalized";
-		if (input.trim().isEmpty()) {
+		input = input.trim();
+		if (input.isEmpty()) {
 			return input;
 		}
 
+		input = input.replaceAll("\\s+", " ");
 		String[] words = input.split(" ");
 		String output = "";
 		for (String word : words) {

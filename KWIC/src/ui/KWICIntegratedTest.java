@@ -10,26 +10,30 @@ import java.util.Scanner;
 
 import org.junit.Test;
 
+import dataSource.Data;
+
 public class KWICIntegratedTest {
 
 	@Test
 	public void testUi() {
-		setInputAndOutputStreams();
+		Data.inst().reset();
+		if(setInputAndOutputStreams()) {
 		KWICMain.main(null);
 		testOutput();
+		}
 	}
 
 	private void testOutput() {
 		Scanner actualOutput = null;
 		try {
-			actualOutput = new Scanner(new File("actualOutput.txt"));
+			actualOutput = new Scanner(new File("src/filesForTesting/actualOutput.txt"));
 		} catch (FileNotFoundException e) {
 			System.out.println("Test output file not found!");
 		}
 
 		Scanner expectedOutput = null;
 		try {
-			expectedOutput = new Scanner(new File("expectedOutput.txt"));
+			expectedOutput = new Scanner(new File("src/filesForTesting/expectedOutput.txt"));
 		} catch (FileNotFoundException e) {
 			System.out.println("Expected output file not found!");
 		}
@@ -43,17 +47,21 @@ public class KWICIntegratedTest {
 		}
 	}
 
-	private void setInputAndOutputStreams() {
+	private boolean setInputAndOutputStreams() {
 		try {
-			System.setIn(new FileInputStream("input.txt"));
+			System.setIn(new FileInputStream("src/filesForTesting/input.txt"));
 		} catch (FileNotFoundException e) {
 			System.out.println("Test input file not found!");
+			return false;
 		}
 		try {
-			System.setOut(new PrintStream("actualOutput.txt"));
+			System.setOut(new PrintStream("src/filesForTesting/actualOutput.txt"));
 		} catch (FileNotFoundException e) {
 			System.out.println("Test output file not found!");
+			return false;
 		}
+		
+		return true;
 	}
 
 }

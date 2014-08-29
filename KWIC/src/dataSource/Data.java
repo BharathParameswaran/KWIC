@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * 
  * @author Bharath
- *
+ * 
  */
 
 public class Data {
@@ -21,8 +21,8 @@ public class Data {
 		_titlesGiven = new ArrayList<String>();
 		_wordsToIgnore = new ArrayList<String>();
 		_resultList = new ArrayList<String>();
-		 _intermediateList = new ArrayList<String>();
-		 _hasNewWordToIgnore=false;
+		_intermediateList = new ArrayList<String>();
+		_hasNewWordToIgnore = false;
 	}
 
 	public static Data inst() {
@@ -32,9 +32,11 @@ public class Data {
 	}
 
 	public boolean addTitle(String title) {
-		if (title == null) return false;
-		if (title.trim().isEmpty()) return false;
-		
+		if (title == null)
+			return false;
+		if (title.trim().isEmpty())
+			return false;
+
 		if (!_titlesGiven.contains(title)) {
 			_titlesGiven.add(title);
 			_intermediateList.add(title);
@@ -43,6 +45,8 @@ public class Data {
 	}
 
 	public List<String> addTitles(List<String> titles) {
+		if (titles == null)
+			return null;
 
 		List<String> result = new ArrayList<String>();
 
@@ -57,9 +61,12 @@ public class Data {
 	}
 
 	public boolean addWordToIgnore(String word) {
-		if (word == null) return false;
-		if (word.trim().isEmpty()) return false;
-		
+		if (word == null)
+			return false;
+		if (word.trim().isEmpty())
+			return false;
+
+		word = word.trim();
 		if (!_wordsToIgnore.contains(word.toLowerCase())) {
 			_wordsToIgnore.add(word.toLowerCase());
 			_hasNewWordToIgnore = true;
@@ -68,6 +75,8 @@ public class Data {
 	}
 
 	public List<String> addWordsToIgnore(List<String> words) {
+		if (words == null)
+			return null;
 		List<String> result = new ArrayList<String>();
 
 		for (String word : words) {
@@ -75,7 +84,7 @@ public class Data {
 				result.add(word);
 			}
 		}
-		
+
 		return result;
 
 	}
@@ -125,24 +134,26 @@ public class Data {
 	}
 
 	public void setResultList(List<String> resultList) {
-		this._resultList = resultList;
+		_resultList.clear();
+		_resultList.addAll(resultList);
 	}
 
 	public void setIntermediateList(List<String> intermediateList) {
-		this._intermediateList = intermediateList;
+		_intermediateList.clear();
+		_intermediateList.addAll(intermediateList);
 	}
-	
+
 	public void setResultSetToIntermediateResult() {
 		_resultList.clear();
 		_resultList.addAll(_intermediateList);
 		_intermediateList.clear();
 	}
-	
-	public void finalizeInteermediateResult(){
-		if(_hasNewWordToIgnore)
+
+	public void finalizeInteermediateResult() {
+		if (_hasNewWordToIgnore)
 			copyAllTitlesToIntermediateResult();
 	}
-	
+
 	private void copyAllTitlesToIntermediateResult() {
 		for (String s : _titlesGiven) {
 			if (!_intermediateList.contains(s)) {
