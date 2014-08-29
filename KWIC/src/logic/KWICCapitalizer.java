@@ -22,7 +22,7 @@ public class KWICCapitalizer {
 	 * @param wordsToIgnore
 	 * @return
 	 */
-	public static String capitalize(String input) {
+	private static String capitalize(String input) {
 
 		assert input != null : "Unexpected null string to be capitalized";
 		assert input.trim().length() != 0 : "Unexpected empty string to be capitalized";
@@ -32,7 +32,6 @@ public class KWICCapitalizer {
 		for (String word : words) {
 			if (isWordToIgnore(word)) {
 				word = convertWordToLowerCase(word);
-
 			} else {
 				word = capitalizeFirstLetterOfWord(word);
 			}
@@ -58,8 +57,9 @@ public class KWICCapitalizer {
 
 	private static String capitalizeFirstLetterOfWord(String word) {
 		Character c = word.charAt(0);
-		if (Character.isAlphabetic(c))
+		if (Character.isAlphabetic(c)) {
 			word = word.replaceFirst(""+word.charAt(0), ""+Character.toUpperCase(c));
+		}
 		return word;
 	}
 

@@ -9,12 +9,14 @@ public class Data {
 	private List<String> _resultList;
 	private List<String> _intermediateList;
 	private static Data _data;
+	private boolean _hasNewWordToIgnore;
 
 	private Data() {
 		_titlesGiven = new ArrayList<String>();
 		_wordsToIgnore = new ArrayList<String>();
 		_resultList = new ArrayList<String>();
 		 _intermediateList = new ArrayList<String>();
+		 _hasNewWordToIgnore=false;
 	}
 
 	public static Data inst() {
@@ -47,8 +49,11 @@ public class Data {
 	}
 
 	public boolean addWordToIgnore(String word) {
+		
 		if (!_wordsToIgnore.contains(word.toLowerCase())) {
 			_wordsToIgnore.add(word.toLowerCase());
+			_hasNewWordToIgnore = true;
+			
 			return true;
 		}
 		return false;
@@ -125,9 +130,17 @@ public class Data {
 		_intermediateList.clear();
 	}
 	
-	public void copyAllTitlesToIntermediateResult() {
-		_intermediateList.clear();
-		_intermediateList.addAll(_titlesGiven);
+	private void copyAllTitlesToIntermediateResult() {
+		for (String s : _titlesGiven) {
+			if (!_intermediateList.contains(s)) {
+				_intermediateList.add(s);
+			}
+		}
+	}
+	
+	public void finalizeInteermediateResult(){
+		if(_hasNewWordToIgnore)
+			copyAllTitlesToIntermediateResult();
 	}
 
 }
