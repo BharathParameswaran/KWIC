@@ -1,6 +1,5 @@
 .settings
 *.orig
 *.class
-*.jar
 .metadata
 RemoteSystemsTempFiles
