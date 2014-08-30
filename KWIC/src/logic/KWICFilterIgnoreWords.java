@@ -11,12 +11,9 @@ public class KWICFilterIgnoreWords {
 	
 	private static Data _data = Data.inst();
 	
-	/**
-	 * Filters the list and returns only those elements that
-	 * do not start with and string in the given list of
-	 * stringsToIgnore
-	 * @param listToFilter
-	 * @param stringsToIgnore
+	/**\
+	 * Filters the new list of titles index and returns only those elements that
+	 * do not start with a word to ignore
 	 * @return
 	 */
 	public static List<String> filterList() {

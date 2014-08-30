@@ -16,6 +16,11 @@ public class KWICRotator {
 	private static final String DELIMITER = " ";
 	private static Data _data = Data.inst();
 	
+	/**
+	 * Rotates the list of new titles added one at a time.
+	 * Returns the list that contains all rotated combinations of all the new titles
+	 * @return
+	 */
 	public static List<String> rotateList() {
 		List<String> inputList = _data.getIntermediateList();
 		assert inputList != null : "Unexpected null list to be capitalized";

@@ -85,6 +85,11 @@ public class KWICController {
 		return false;
 	}
 
+	/**
+	 * Performs all the required operations on the data set
+	 * Merges it with the final result set if isMerge is true
+	 * @param isMerge
+	 */
 	private void updateData(boolean isMerge) {
 		KWICCapitalizer.capitalizeList();
 		KWICRotator.rotateList();
@@ -99,7 +104,7 @@ public class KWICController {
 	// --------------------------------------------------
 
 	/**
-	 * Adds the given word as an ignore Word Refreshes the output list based on
+	 * Adds the given word as an ignore Word Refreshes the result set based on
 	 * this addition
 	 * 
 	 * @param words
@@ -158,8 +163,8 @@ public class KWICController {
 	/**
 	 * This method is run when a new ignore word has been added.
 	 * 
-	 * @Precondition: Assumes that the new word has been added to the field
-	 *                _wordsToIgnore
+	 * @Precondition: Assumes that the new word has been added to Data Storage
+	 *            
 	 */
 	private void updateResultsListForAddedIgnoreWord() {
 		if (_data.getCurrentResult().isEmpty())

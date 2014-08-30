@@ -17,9 +17,7 @@ public class KWICCapitalizer {
 	/**
 	 * Accepts an input string and capitalizes the first letter of keywords and
 	 * converts the other words to lower case.
-	 * 
 	 * @param input
-	 * @param wordsToIgnore
 	 * @return
 	 */
 	private static String capitalize(String input) {

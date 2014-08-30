@@ -25,12 +25,22 @@ public class Data {
 		_hasNewWordToIgnore = false;
 	}
 
+	/**
+	 * Instantiates an object of class Data if the object is not already present and
+	 * returns the object.
+	 * @return
+	 */
 	public static Data inst() {
 		if (_data == null)
 			_data = new Data();
 		return _data;
 	}
 
+	/**
+	 * Adds a new title to the list. Returns true if successful, false if it fails
+	 * @param title
+	 * @return
+	 */
 	public boolean addTitle(String title) {
 		if (title == null)
 			return false;
@@ -43,6 +53,12 @@ public class Data {
 		}
 		return true;
 	}
+	
+	/**
+	 * Tries to add all the given titles, returns those titles that had issues
+	 * @param titles
+	 * @return
+	 */
 
 	public List<String> addTitles(List<String> titles) {
 		if (titles == null)
@@ -59,6 +75,12 @@ public class Data {
 		return result;
 
 	}
+	
+	/**
+	 * Adds a new ignore word to the list. Returns true if successful, false if it fails
+	 * @param word
+	 * @return
+	 */
 
 	public boolean addWordToIgnore(String word) {
 		if (word == null)
@@ -74,6 +96,11 @@ public class Data {
 		return true;
 	}
 
+	/**
+	 * Tries to add all the given ignore words, returns those words that had issues
+	 * @param words
+	 * @return
+	 */
 	public List<String> addWordsToIgnore(List<String> words) {
 		if (words == null)
 			return null;

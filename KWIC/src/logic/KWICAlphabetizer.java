@@ -16,10 +16,9 @@ public class KWICAlphabetizer {
 	private static Data _data = Data.inst();
 
 	/**
-	 * Accepts a list of String and arranges them in alphabetic order
+	 * Sorts the new list of title Index in alphabetic order
 	 * Returns the alphabetized list
 	 * or returns null if there was no string to be alphabetized
-	 * @param listToAlphabetize
 	 * @return
 	 */
 	public static List<String> alphabetize(){

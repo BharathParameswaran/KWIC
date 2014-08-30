@@ -14,11 +14,8 @@ public class KWICMerger {
 	private static Data _data = Data.inst();
 
 	/**
-	 * Accepts a sorted list of Strings and a new list of Strings to be added
-	 * and merges them into one sorted list and returns it
-	 * 
-	 * @param newTitles
-	 * @param kwicTitleIndex
+	 * Merges the new list of title index to the existing result 
+	 * and returns the merged list.
 	 * @return
 	 */
 

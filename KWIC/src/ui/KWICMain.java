@@ -57,8 +57,6 @@ class KWICMain {
 
 	private static void printExitMessage() {
 		System.out.println(EXIT_MESSAGE);
-		// pause for user to press key
-		sc.nextLine();
 	}
 
 	private static int getInputFromUser() {
