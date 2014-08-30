@@ -1,7 +1,20 @@
 KWIC
 ====
 
-<h2>Folder Structure and Files</h2>
+<h3>About the System</h3>
+
+<p>
+  This System implements the KWIC application using Java and JUnit (for testing). The Architecture used for this system   is a modified "Shared Repository" with influences coming from "Pipe and Filter" Architectural Design.
+</p>
+
+<h3>Running the System</h3>
+
+<p>
+  The executable .bat file can be found in the KWIC/jar folder along with the Runnable jar file kwic_thyagesh_bharath.jar
+  The program can be started up by double clicking on the bat file.
+</p>
+
+<h3>Folder Structure and Files</h3>
 
 <p>
   <ul>
