@@ -29,7 +29,7 @@ KWIC
       The Integrated test is in the ui folder.
     </li>
     <li>
-      The KWIC/src/testingFiles folder contains text files used for Components Tests and Integrated Tests.
+      The KWIC/src/filesForTesting folder contains text files used for Integrated Tests.
     </li>
   </ul>
 </p>
