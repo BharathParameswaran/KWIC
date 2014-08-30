@@ -22,6 +22,8 @@ class KWICMain {
 	private static final String WORDS_TO_IGNORE_LIST = "List of words to ignore";
 	private static final String TITLES_LIST = "List of titles";
 	private static final String RESULT_SET = "Result Set";
+	private static final String WELCOME_MESSAGE = "Hi! Welcome to the KWIC system. Here are the options available to you:";
+	private static final String EXIT_MESSAGE = "Thanks for using our system!";
 	private static final int EXIT_OPTION = 7;
 	private static final int INVALID_OPTION = -1;
 	private static KWICController _controller = new KWICController();
@@ -36,6 +38,7 @@ class KWICMain {
 			"7. Exit" };
 	
 	public static void main(String[] args) {
+		printWelcomeMessage();
 		printOptionsForUser();
 		int option = 0;
 		while (option != EXIT_OPTION) {
@@ -43,12 +46,19 @@ class KWICMain {
 			if (!isValid(option))
 				continue;
 			processInput(option);
-
 		}
+		printExitMessage();
 	}
 
-	private static boolean isValid(int option) {
-		return (option != INVALID_OPTION);
+	private static void printWelcomeMessage() {
+		System.out.println(WELCOME_MESSAGE);
+		
+	}
+
+	private static void printExitMessage() {
+		System.out.println(EXIT_MESSAGE);
+		// pause for user to press key
+		sc.nextLine();
 	}
 
 	private static int getInputFromUser() {
@@ -63,6 +73,10 @@ class KWICMain {
 			return INVALID_OPTION;
 		}
 		return option;
+	}
+
+	private static boolean isValid(int option) {
+		return (option != INVALID_OPTION);
 	}
 
 	private static void processInput(int option) {
